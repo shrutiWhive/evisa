@@ -1,0 +1,88 @@
+const ROOTS = {
+  AUTH: "/auth",
+  AUTH_DEMO: "/auth-demo",
+  DASHBOARD: "/dashboard",
+};
+
+// ----------------------------------------------------------------------
+
+export const paths = {
+  home: "/",
+  // AUTH
+  auth: {
+    signIn: `${ROOTS.AUTH}/sign-in`,
+    signUp: `${ROOTS.AUTH}/sign-up`,
+  },
+  // eligibility: "/register-step-form",
+
+  campaign: {
+    form: (encryptedId) => `/campaign/${encryptedId}/form`,
+    formPath: "/form",
+  },
+
+  // DASHBOARD
+  dashboard: {
+    root: ROOTS.DASHBOARD,
+
+    lead: {
+      root: `${ROOTS.DASHBOARD}/lead`,
+    },
+
+    campaign: {
+      root: `${ROOTS.DASHBOARD}/campaign`,
+      create: `${ROOTS.DASHBOARD}/campaign/create`,
+      detail: (id) => `${ROOTS.DASHBOARD}/campaign/${id}`,
+      edit: (id) => `${ROOTS.DASHBOARD}/campaign/${id}/edit`,
+      leadDetails: (id) => `${ROOTS.DASHBOARD}/campaign/${id}/leads`,
+    },
+
+    formTemplate: {
+      root: `${ROOTS.DASHBOARD}/form-template`,
+      create: `${ROOTS.DASHBOARD}/form-template/create`,
+      detail: (id) => `${ROOTS.DASHBOARD}/form-template/${id}`,
+      edit: (id) => `${ROOTS.DASHBOARD}/form-template/${id}/edit`,
+    },
+
+    profile: {
+      root: `${ROOTS.DASHBOARD}/profile`,
+    },
+
+    transaction: {
+      root: `${ROOTS.DASHBOARD}/transaction`,
+    },
+
+    leadDetail: {
+      detail: (id) => `${ROOTS.DASHBOARD}/lead-detail/${id}`,
+    },
+
+    employee: {
+      root: `${ROOTS.DASHBOARD}/employee`,
+      create: `${ROOTS.DASHBOARD}/employee/create`,
+      detail: (id) => `${ROOTS.DASHBOARD}/employee/${id}`,
+      edit: (id) => `${ROOTS.DASHBOARD}/employee/${id}/edit`,
+    },
+
+    appointment: {
+      root: `${ROOTS.DASHBOARD}/appointment`,
+      category: `${ROOTS.DASHBOARD}/appointment/category`,
+      timeSlot: `${ROOTS.DASHBOARD}/appointment/time-slot`,
+    },
+
+    creditLogs: {
+      root: `${ROOTS.DASHBOARD}/credit-logs`,
+    },
+
+    attendance: {
+      root: `${ROOTS.DASHBOARD}/attendance-report`,
+    },
+
+    reports: {
+      root: `${ROOTS.DASHBOARD}/reports/team-report`,
+      transaction: `${ROOTS.DASHBOARD}/reports/transaction-report`,
+      smsReport: `${ROOTS.DASHBOARD}/reports/sms-report`,
+      topupReport: `${ROOTS.DASHBOARD}/reports/topup-report`,
+      packageReport: `${ROOTS.DASHBOARD}/reports/package-report`,
+      creditReport: `${ROOTS.DASHBOARD}/reports/credit-report`,
+    },
+  },
+};
