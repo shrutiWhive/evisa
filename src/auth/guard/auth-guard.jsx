@@ -18,6 +18,7 @@ export function AuthGuard({ children }) {
   const pathname = usePathname();
 
   const { isLogin, token } = useAppSelector(selectAuthState);
+  console.log("this is bearer token", token);
 
   const [isChecking, setIsChecking] = useState(true);
 

@@ -24,7 +24,7 @@ import { Logo } from "src/components/logo";
 
 const LINKS = [
   {
-    headline: "Smart Enrolls",
+    headline: "EB3 Visa",
     children: [
       { name: "About us", href: paths.about },
       { name: "Contact us", href: paths.contact },

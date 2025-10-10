@@ -5,7 +5,7 @@ import { AuthCenteredLayout } from "src/layouts/auth-centered";
 
 import { SplashScreen } from "src/components/loading-screen";
 
-import { GuestGuard } from "src/auth/guard";
+import { AuthGuard, GuestGuard } from "src/auth/guard";
 import { FormCenteredLayout } from "src/layouts/auth-centered/form-layout";
 
 // ----------------------------------------------------------------------
@@ -55,11 +55,11 @@ export const authRoutes = [
       {
         path: "register-step-form",
         element: (
-          <GuestGuard>
+          <AuthGuard>
             <FormCenteredLayout>
               <EligibilityPage />
             </FormCenteredLayout>
-          </GuestGuard>
+          </AuthGuard>
         ),
       },
     ],

@@ -2,8 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isLogin: false,
-  user: {},
-  organization: {},
+  employee: {},
   token: "",
 };
 
@@ -12,13 +11,11 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setOrganization: (state, action) => {
-      const { organization, user, token } = action.payload;
+      const { employee, token } = action.payload;
 
       state.isLogin = true;
 
-      state.user = user;
-
-      state.organization = organization;
+      state.employee = employee;
 
       state.token = token;
       
@@ -27,9 +24,7 @@ export const authSlice = createSlice({
     clearOrganization: (state) => {
       state.isLogin = false;
 
-      state.user = {};
-
-      state.organization = {};
+      state.employee = {};
 
       state.token = "";
     },

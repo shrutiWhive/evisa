@@ -4,6 +4,7 @@ export const endpoints = {
     signUp: "register",
     signOut: "logout",
     country: "country",
+   
   },
 
   profile: {
@@ -19,6 +20,7 @@ export const endpoints = {
   },
 
   campaign: {
+     eligibilityForm: "eligibility/save-eligibility-form",
     create: "campaign/store",
     list: "campaign",
     detail: (id) => `campaign/show/${id}`,

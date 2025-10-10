@@ -11,7 +11,6 @@ export const signUp = async (data) => {
     return response;
   } catch (error) {
     console.error(error);
-
     throw error;
   }
 };
@@ -19,6 +18,18 @@ export const signUp = async (data) => {
 export const signIn = async (data) => {
   try {
     const response = await poster(endpoints.auth.signIn, data);
+
+    return response;
+  } catch (error) {
+    console.error(error);
+
+    throw error;
+  }
+};
+
+export const saveEligibilityForm = async (data) => {
+  try {
+    const response = await poster(endpoints.campaign.eligibilityForm, data);
 
     return response;
   } catch (error) {

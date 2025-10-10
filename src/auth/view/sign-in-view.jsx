@@ -8,7 +8,6 @@ import { LoadingButton } from "@mui/lab";
 import { Box, Link, Alert, IconButton, InputAdornment } from "@mui/material";
 
 import { paths } from "src/routes/paths";
-import { useRouter } from "src/routes/hooks";
 import { RouterLink } from "src/routes/components";
 
 import { useAppDispatch } from "src/redux/hooks";
@@ -22,6 +21,7 @@ import { signIn } from "src/api";
 import { getErrorMessage } from "../utils";
 import { toast } from "src/components/snackbar";
 import { FormHead } from "../components/form-head";
+import { useRouter } from "src/routes/hooks";
 
 // ----------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ export function SignInView() {
 
       const response = await signIn(data);
 
-      // dispatch(setOrganization(response.data));
+      dispatch(setOrganization(response.data));
 
       reset();
       toast.success(response.message || "Login successful!");

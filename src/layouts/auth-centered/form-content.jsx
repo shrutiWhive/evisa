@@ -6,20 +6,20 @@ import { layoutClasses } from "../core/classes";
 
 // ----------------------------------------------------------------------
 
-export function AuthCenteredContent({ sx, children, className, ...other }) {
+export function FormCenteredContent({ sx, children, className, ...other }) {
   return (
     <Box
       className={mergeClasses([layoutClasses.content, className])}
       sx={[
         (theme) => ({
-          py: 5,
-          px: 3,
+          py: { xs: 3, md: 5 },
+          px: { xs: 2, sm: 3, md: 4 },
           width: 1,
           zIndex: 2,
           borderRadius: 2,
           display: "flex",
           flexDirection: "column",
-          maxWidth: "var(--layout-auth-content-width)",
+          maxWidth: "100%",
           bgcolor: theme.vars.palette.background.default,
         }),
         ...(Array.isArray(sx) ? sx : [sx]),

@@ -160,7 +160,7 @@ export function DashboardLayout({
       rightArea: (
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           {/* Credit Amount Text */}
-          <Box
+          {/* <Box
             sx={{
               gap: 1,
               display: "flex",
@@ -173,7 +173,7 @@ export function DashboardLayout({
             <Label color="primary">
               Remaining Credits: {profile?.credit || 0}
             </Label>
-          </Box>
+          </Box> */}
 
           {/* Account Popover */}
           <AccountPopover data={accountNavData} />

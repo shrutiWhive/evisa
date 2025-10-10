@@ -39,31 +39,37 @@ import { authRoutes } from "src/routes/sections/auth";
 
 // ----------------------------------------------------------------------
 
-export const SignUpSchema = zod.object({
-  first_name: zod.string().min(1, { message: "First name is required!" }),
-  last_name: zod.string().min(1, { message: "First name is required!" }),
-  email: zod
-    .string()
-    .min(1, { message: "User email is required!" })
-    .email({ message: "Email must be a valid email address!" }),
-  country_code: zod.number().min(1),
-  phone: zod
-    .string()
-    .min(1, { message: "Contact number is required!" })
-    .regex(/^\d{10}$/, {
-      message: "Contact number must be exactly 10 digits!",
+export const SignUpSchema = zod
+  .object({
+    first_name: zod.string().min(1, { message: "First name is required!" }),
+    last_name: zod.string().min(1, { message: "Last name is required!" }),
+    email: zod
+      .string()
+      .min(1, { message: "User email is required!" })
+      .email({ message: "Email must be a valid email address!" }),
+    country_code: zod.string().min(1, { message: "Country code is required!" }),
+    phone: zod
+      .string()
+      .min(1, { message: "Contact number is required!" })
+      .regex(/^\d{10}$/, {
+        message: "Contact number must be exactly 10 digits!",
+      }),
+    password: zod
+      .string()
+      .min(1, { message: "Password is required!" })
+      .min(6, { message: "Password must be at least 6 characters!" }),
+    password_confirmation: zod
+      .string()
+      .min(1, { message: "Confirm password is required!" })
+      .min(6, { message: "Confirm Password must be at least 6 characters!" }),
+    agreed_to_terms: zod.boolean().refine((val) => val === true, {
+      message: "You must agree to the terms and conditions!",
     }),
-
-  password: zod
-    .string()
-    .min(1, { message: "Password is required!" })
-    .min(6, { message: "Password must be at least 6 characters!" }),
-
-  password_confirmation: zod
-    .string()
-    .min(1, { message: "Confirm password is required!" })
-    .min(6, { message: "Confirm Password must be at least 6 characters!" }),
-});
+  })
+  .refine((data) => data.password === data.password_confirmation, {
+    message: "Passwords didn't match!",
+    path: ["password_confirmation"],
+  });
 
 // ----------------------------------------------------------------------
 
@@ -87,6 +93,7 @@ export function SignUpView() {
     country_code: "",
     password: "",
     password_confirmation: "",
+    agreed_to_terms: false,
   };
 
   const methods = useForm({
@@ -97,7 +104,6 @@ export function SignUpView() {
   const {
     handleSubmit,
     reset,
-
     formState: { isSubmitting, errors },
   } = methods;
 
@@ -105,27 +111,20 @@ export function SignUpView() {
     try {
       setErrorMessage("");
 
-      if (data.password !== data.password_confirmation) {
-        setErrorMessage("Passwords didnt match!");
+      const response = await signUp(data);
 
-        return;
-      }
-      // const response = await signUp(data);
-
-      // dispatch(setOrganization(response.data));
+      dispatch(setOrganization(response.data));
 
       reset();
-      // toast.success(
-      //   response.message || "Registration successful! Welcome aboard."
-      // );
+
+      toast.success(
+        response.message || "Registration successful! Welcome aboard."
+      );
 
       router.push("/auth/register-step-form");
     } catch (error) {
       const errorMessages = Object.values(error.message).flat();
       toast.error(errorMessages[0]);
-      // toast.error(
-      //   error.message || "Oops! Something went wrong. Please try again"
-      // );
     }
   });
 
@@ -164,19 +163,13 @@ export function SignUpView() {
           flexDirection: { xs: "column", sm: "row" },
         }}
       >
-        {/* <Field.Text
-          name="country_code"
-          label="Country"
-          slotProps={{ inputLabel: { shrink: true } }}
-        /> */}
-
         <Field.Select
           name="country_code"
           label="Country Code"
-          // disabled={Boolean(currentCampaign)}
+          slotProps={{ inputLabel: { shrink: true } }}
         >
           {country.map((option) => (
-            <MenuItem key={option.label} value={option.value}>
+            <MenuItem key={option.label} value={String(option.value)}>
               {option.label}
             </MenuItem>
           ))}
@@ -246,14 +239,8 @@ export function SignUpView() {
       </Box>
 
       <Box sx={{ textAlign: "center" }}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              // {...register("terms")}
-              checked={methods.watch("terms")}
-            />
-          }
+        <Field.Checkbox
+          name="agreed_to_terms"
           label={
             <Box component="span">
               I agree to all{" "}
@@ -270,12 +257,13 @@ export function SignUpView() {
             </Box>
           }
         />
-        {errors.terms && (
-          <FormHelperText error sx={{ textAlign: "center" }}>
-            {errors.terms.message}
+        {errors.agreed_to_terms && (
+          <FormHelperText error sx={{ textAlign: "center", mt: -1 }}>
+            {errors.agreed_to_terms.message}
           </FormHelperText>
         )}
       </Box>
+
       <LoadingButton
         fullWidth
         color="primary"
