@@ -35,7 +35,7 @@ import { accountNavData } from "../nav-config-account";
 import { AccountPopover } from "../components/account-popover";
 import {
   navData as dashboardNavData,
-  formatNavData,
+  // formatNavData,
 } from "../nav-config-dashboard";
 import { dashboardLayoutVars, dashboardNavColorVars } from "./css-vars";
 import { Box, Typography } from "@mui/material";
@@ -64,21 +64,13 @@ export function DashboardLayout({
 
   // const dynamicNavData = [
   //   {
-  //     items: [...currentUserPermissions]
+  //     items: currentUserPermissions
+  //       .filter((item) => item.is_active) // Filter root items too
   //       .sort((a, b) => a.position - b.position)
-  //       .map(formatNavData),
+  //       .map(dashboardNavData)
+  //       .filter(Boolean), // Remove nulls from formatting
   //   },
   // ];
-
-  const dynamicNavData = [
-    {
-      items: currentUserPermissions
-        .filter((item) => item.is_active) // Filter root items too
-        .sort((a, b) => a.position - b.position)
-        .map(formatNavData)
-        .filter(Boolean), // Remove nulls from formatting
-    },
-  ];
 
   const navVars = dashboardNavColorVars(
     theme,
@@ -88,25 +80,11 @@ export function DashboardLayout({
 
   const { value: open, onFalse: onClose, onTrue: onOpen } = useBoolean();
 
+  const navData = slotProps?.nav?.data ?? dashboardNavData;
+
   const isNavMini = settings.state.navLayout === "mini";
   const isNavHorizontal = settings.state.navLayout === "horizontal";
   const isNavVertical = isNavMini || settings.state.navLayout === "vertical";
-  useEffect(() => {
-    dispatch(fetchSiteSettingRequest());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (!isLogin) return;
-
-    dispatch(fetchCurrentUserPermissionsRequest());
-
-    dispatch(fetchProfileRequest());
-  }, [dispatch, isLogin]);
-
-  const navigationData = !currentUserPermissions?.length
-    ? dashboardNavData
-    : dynamicNavData;
-
 
   const renderHeader = () => {
     const headerSlotProps = {
@@ -133,7 +111,7 @@ export function DashboardLayout({
       ),
       bottomArea: isNavHorizontal ? (
         <NavHorizontal
-          data={navigationData}
+          data={navData}
           layoutQuery={layoutQuery}
           cssVars={navVars.section}
         />
@@ -150,7 +128,7 @@ export function DashboardLayout({
             }}
           />
           <NavMobile
-            data={navigationData}
+            data={navData}
             open={open}
             onClose={onClose}
             cssVars={navVars.section}
@@ -195,7 +173,7 @@ export function DashboardLayout({
 
   const renderSidebar = () => (
     <NavVertical
-      data={navigationData}
+      data={navData}
       isNavMini={isNavMini}
       layoutQuery={layoutQuery}
       cssVars={navVars.section}

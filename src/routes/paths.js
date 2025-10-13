@@ -15,8 +15,8 @@ export const paths = {
   },
   // eligibility: "/register-step-form",
 
-  campaign: {
-    form: (encryptedId) => `/campaign/${encryptedId}/form`,
+  onBoardingForm: {
+    form: (id) => `/ebform/${id}`,
     formPath: "/form",
   },
 
@@ -28,12 +28,9 @@ export const paths = {
       root: `${ROOTS.DASHBOARD}/lead`,
     },
 
-    campaign: {
-      root: `${ROOTS.DASHBOARD}/campaign`,
-      create: `${ROOTS.DASHBOARD}/campaign/create`,
-      detail: (id) => `${ROOTS.DASHBOARD}/campaign/${id}`,
-      edit: (id) => `${ROOTS.DASHBOARD}/campaign/${id}/edit`,
-      leadDetails: (id) => `${ROOTS.DASHBOARD}/campaign/${id}/leads`,
+    vacancy: {
+      detail: (id) => `${ROOTS.DASHBOARD}/vacancy-detail/${id}`,
+
     },
 
     formTemplate: {

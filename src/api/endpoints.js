@@ -7,6 +7,13 @@ export const endpoints = {
    
   },
 
+    vacancy: {
+    eligibilityForm: "eligibility/save-eligibility-form",
+    list: "vacancy",
+    detail: (id) => `vacancy/show/${id}`,
+  
+  },
+
   profile: {
     get: "organization/show",
     update: "organization/updateOrganization",
@@ -19,19 +26,7 @@ export const endpoints = {
     update: (id) => `user/update/${id}`,
   },
 
-  campaign: {
-     eligibilityForm: "eligibility/save-eligibility-form",
-    create: "campaign/store",
-    list: "campaign",
-    detail: (id) => `campaign/show/${id}`,
-    authDetail: (id) => `lead-campaign/show/${id}`,
-    update: (id) => `campaign/update/${id}`,
-    sendEmail: "/campaign/send-email",
-    sendSms: "/campaign/send-sms",
-    exportLeadList: (id) => `campaigns/${id}/export`,
-    exportLeadTemplate: (id) => `campaigns/${id}/lead-import-template`,
-    importLeadList: (id) => `campaign/import-leads/${id}`,
-  },
+
 
   telecommunication: {
     providers: "/telcos",

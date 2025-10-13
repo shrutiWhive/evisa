@@ -4,11 +4,11 @@ import { useParams } from "src/routes/hooks";
 
 import { CONFIG } from "src/global-config";
 
-import { CampaignEditView } from "src/sections/campaign/view";
+import { VacancyDetailView } from "src/sections/vacancy/view";
 
 // ----------------------------------------------------------------------
 
-const metadata = { title: `Campaign edit - ${CONFIG.appName}` };
+const metadata = { title: `Vacancy details - ${CONFIG.appName}` };
 
 export default function Page() {
   const { id = "" } = useParams();
@@ -19,7 +19,7 @@ export default function Page() {
         <title> {metadata.title}</title>
       </Helmet>
 
-      <CampaignEditView id={id} />
+      <VacancyDetailView id={id} />
     </>
   );
 }

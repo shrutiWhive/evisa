@@ -19,8 +19,6 @@ import { HeaderSection } from "../core/header-section";
 import { navData as mainNavData } from "../nav-config-main";
 import { SignInButton } from "../components/sign-in-button";
 
-import { useAppDispatch } from "src/redux/hooks";
-import { fetchSiteSettingRequest } from "src/redux/actions";
 
 // ----------------------------------------------------------------------
 
@@ -33,20 +31,20 @@ export function MainLayout({
 }) {
   const pathname = usePathname();
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  const isCampaignFormPage = pathname.endsWith(paths.campaign.formPath);
+  const isOnBoardingFormPage = pathname.endsWith(paths.onBoardingForm.formPath);
 
   const { value: open, onFalse: onClose, onTrue: onOpen } = useBoolean();
 
   const navData = slotProps?.nav?.data ?? mainNavData;
 
-  useEffect(() => {
-    dispatch(fetchSiteSettingRequest());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchSiteSettingRequest());
+  // }, [dispatch]);
 
   const renderHeader = () => {
-    if (isCampaignFormPage) return null;
+    if (isOnBoardingFormPage) return null;
 
     const headerSlots = {
       topArea: (
@@ -108,7 +106,7 @@ export function MainLayout({
   };
 
   const renderFooter = () => {
-    if (isCampaignFormPage) return null;
+    if (isOnBoardingFormPage) return null;
 
     return <Footer sx={slotProps?.footer?.sx} layoutQuery={layoutQuery} />;
   };

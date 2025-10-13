@@ -7,6 +7,7 @@ import { SplashScreen } from "src/components/loading-screen";
 import { authRoutes } from "./auth";
 import { mainRoutes } from "./main";
 import { dashboardRoutes } from "./dashboard";
+import { onBoardingRoutes } from "./onboarding";
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +42,9 @@ export const routesSection = [
 
   // Main
   ...mainRoutes,
+
+  //onBoarding
+  ...onBoardingRoutes,
 
   // No match
   { path: "*", element: <Page404 /> },

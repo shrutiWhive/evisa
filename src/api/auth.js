@@ -29,7 +29,7 @@ export const signIn = async (data) => {
 
 export const saveEligibilityForm = async (data) => {
   try {
-    const response = await poster(endpoints.campaign.eligibilityForm, data);
+    const response = await poster(endpoints.vacancy.eligibilityForm, data);
 
     return response;
   } catch (error) {

@@ -1,38 +1,13 @@
 import Grid from "@mui/material/Grid2";
 
 import { DashboardContent } from "src/layouts/dashboard";
-import { SeoIllustration } from "src/assets/illustrations";
 
-import { AppWelcome } from "../app-welcome";
-import { AppWidgetSummary } from "../app-widget-summary";
 import { Iconify } from "src/components/iconify";
-import { Box, Step, StepLabel, Stepper } from "@mui/material";
+import { Box, Step, StepLabel, Stepper, Typography } from "@mui/material";
+import { useGetVacancy } from "src/api/vacancy";
+import { VacancyList } from "./vacancy-list";
 
 // ----------------------------------------------------------------------
-
-export const STATIC_SLIDES = [
-  {
-    id: 1,
-    title: "Smart Enrolls",
-    coverUrl:
-      "https://cdn.corporatefinanceinstitute.com/assets/smart-goal-1.jpeg",
-    description: "This is a mock description.",
-  },
-  {
-    id: 2,
-    title: "Smart Pipeline",
-    coverUrl:
-      "https://cdn.corporatefinanceinstitute.com/assets/smart-goal-1.jpeg",
-    description: "This is a mock description.",
-  },
-  {
-    id: 3,
-    title: "Leads Enrollment",
-    coverUrl:
-      "https://cdn.corporatefinanceinstitute.com/assets/smart-goal-1.jpeg",
-    description: "This is a mock description.",
-  },
-];
 
 const steps = [
   { label: "Onboarding", icon: "mdi:check-circle-outline" },
@@ -42,17 +17,10 @@ const steps = [
 ];
 
 export function AppView() {
+  const { vacancy } = useGetVacancy();
+
   return (
     <DashboardContent maxWidth="xl">
-      {/* <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 8 }}>
-          <AppWelcome
-            title={`Welcome back 👋 \n EB3 Visa`}
-            img={<SeoIllustration hideBackground />}
-          />
-        </Grid>
-      </Grid> */}
-
       <Box
         sx={{
           bgcolor: "#ffffffff",
@@ -103,6 +71,21 @@ export function AppView() {
             </Step>
           ))}
         </Stepper>
+
+        <Box textAlign="center" mb={5}>
+          <Typography
+            variant="h5"
+            sx={{ fontWeight: 700, color: "text.primary", mb: 1 }}
+          >
+            Congrats, You are eligible for EB-3 Visa
+          </Typography>
+          <Typography color="text.secondary">
+            We have found that you are eligible for the EB-3 Visa, now select
+            your Employer and complete the form.
+          </Typography>
+        </Box>
+
+        <VacancyList vacancyList={vacancy} />
       </Box>
     </DashboardContent>
   );
