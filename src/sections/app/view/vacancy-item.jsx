@@ -10,15 +10,15 @@ import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import ListItemText from "@mui/material/ListItemText";
+import Button from "@mui/material/Button";
 
 import { RouterLink } from "src/routes/components";
 
-import { fDate, fDateTime } from "src/utils/format-time";
+import { fDate } from "src/utils/format-time";
 import { fCurrency } from "src/utils/format-number";
 
 import { Iconify } from "src/components/iconify";
 import { CustomPopover } from "src/components/custom-popover";
-import { Button } from "@mui/material";
 import { paths } from "src/routes/paths";
 import { useRouter } from "src/routes/hooks";
 
@@ -33,183 +33,142 @@ export function VacancyItem({
   ...other
 }) {
   const menuActions = usePopover();
-
-  //   const renderMenuActions = () => (
-  //     <CustomPopover
-  //       open={menuActions.open}
-  //       anchorEl={menuActions.anchorEl}
-  //       onClose={menuActions.onClose}
-  //       slotProps={{ arrow: { placement: "right-top" } }}
-  //     >
-  //       <MenuList>
-  //         <li>
-  //           <MenuItem
-  //             component={RouterLink}
-  //             href={detailsHref}
-  //             onClick={() => menuActions.onClose()}
-  //           >
-  //             <Iconify icon="solar:eye-bold" />
-  //             View
-  //           </MenuItem>
-  //         </li>
-
-  //         <li>
-  //           <MenuItem
-  //             component={RouterLink}
-  //             href={editHref}
-  //             onClick={() => menuActions.onClose()}
-  //           >
-  //             <Iconify icon="solar:pen-bold" />
-  //             Edit
-  //           </MenuItem>
-  //         </li>
-
-  //         <MenuItem
-  //           onClick={() => {
-  //             menuActions.onClose();
-  //             onDelete();
-  //           }}
-  //           sx={{ color: "error.main" }}
-  //         >
-  //           <Iconify icon="solar:trash-bin-trash-bold" />
-  //           Delete
-  //         </MenuItem>
-  //       </MenuList>
-  //     </CustomPopover>
-  //   );
-
-  const renderImages = () => (
-    <Box sx={{ p: 1, gap: 0.5, display: "flex" }}>
-      <Box sx={{ flexGrow: 1, position: "relative" }}>
-        {/* <Image
-          src="https://assets.publishing.service.gov.uk/media/5a60e43040f0b652634c90ee/s300_visa_pic.jpg"
-          alt="Visa Document"
-          sx={{ width: 1, height: 164, borderRadius: 1 }}
-        /> */}
-        <Box
-          component="img"
-          src="https://assets.publishing.service.gov.uk/media/5a60e43040f0b652634c90ee/s300_visa_pic.jpg"
-          alt="Visa Document"
-          sx={{
-            mt: 2,
-            maxWidth: 400,
-            width: "100%",
-            borderRadius: 2,
-            objectFit: "cover",
-          }}
-        />
-      </Box>
-    </Box>
-  );
-
-  const renderTexts = () => (
-    <ListItemText
-      sx={[(theme) => ({ p: theme.spacing(2.5, 2.5, 2, 2.5) })]}
-      primary={`Posted date: ${fDateTime(job.created_at)}`}
-      secondary={
-        <Link component={RouterLink} href={detailsHref} color="inherit">
-          {job.employer_name}
-        </Link>
-      }
-      slotProps={{
-        primary: {
-          sx: { typography: "caption", color: "text.disabled" },
-        },
-        secondary: {
-          noWrap: true,
-          component: "h6",
-          sx: { mt: 1, color: "text.primary", typography: "subtitle1" },
-        },
-      }}
-    />
-  );
-
-  const renderInfo = () => (
-    <Box
-      sx={[
-        (theme) => ({
-          gap: 1.5,
-          display: "flex",
-          position: "relative",
-          flexDirection: "column",
-          p: theme.spacing(0, 2.5, 2.5, 2.5),
-        }),
-      ]}
-    >
-      {[
-        {
-          icon: (
-            <Iconify
-              icon="mingcute:location-fill"
-              sx={{ color: "error.main" }}
-            />
-          ),
-          label: job.location,
-        },
-
-        {
-          icon: (
-            <Iconify
-              icon="solar:money-bag-bold"
-              sx={{ color: "primary.main" }}
-            />
-          ),
-          label: `${job.wages} per hour`,
-        },
-      ].map((item) => (
-        <Box
-          key={item.label}
-          sx={[
-            {
-              gap: 0.5,
-              display: "flex",
-              typography: "body2",
-              alignItems: "center",
-            },
-          ]}
-        >
-          {item.icon}
-          {item.label}
-        </Box>
-      ))}
-    </Box>
-  );
   const router = useRouter();
 
   const handleClick = () => {
     router.push(paths.dashboard.vacancy.detail(job.id));
   };
 
-  const renderAction = () => (
-    <>
-      <Divider sx={{ borderStyle: "dashed" }} />
-      <Box sx={{ p: 2.5, pt: 2 }}>
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          endIcon={<Iconify icon="mdi:arrow-right" />}
-          onClick={handleClick}
-          //   onClick={onApply}
-          sx={{
-            borderRadius: 1.5,
-            textTransform: "none",
-            fontWeight: 600,
-            py: 1.2,
-          }}
-        >
-          Apply Now
-        </Button>
-      </Box>
-    </>
-  );
   return (
     <>
       <Card sx={sx} {...other}>
-        {renderImages()}
-        {renderTexts()}
-        {renderInfo()}
-        {renderAction()}
+
+        <Box sx={{ p: 3, pb: 2 }}>
+          <Avatar
+            alt={job.employer_name}
+            src={job.company_logo || "https://via.placeholder.com/48"}
+            variant="rounded"
+            sx={{ width: 48, height: 48, mb: 2 }}
+          />
+
+          <ListItemText
+            sx={{ mb: 1 }}
+            primary={
+              <Link component={RouterLink} href={detailsHref} color="inherit">
+                {job.title}
+              </Link>
+            }
+            secondary={`Posted date: ${fDate(job.created_at)}`}
+            slotProps={{
+              primary: { sx: { typography: "subtitle1" } },
+              secondary: {
+                sx: { mt: 1, typography: "caption", color: "text.disabled" },
+              },
+            }}
+          />
+
+          <Box
+            sx={{
+              gap: 0.5,
+              display: "flex",
+              alignItems: "center",
+              color: "success.main",
+              typography: "caption",
+            }}
+          >
+            <Iconify width={16} icon="solar:check-circle-bold" />
+            Status: {job.status}
+          </Box>
+        </Box>
+
+        <Divider sx={{ borderStyle: "dashed" }} />
+
+        <Box
+          sx={{
+            p: 3,
+            rowGap: 1.5,
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+          }}
+        >
+          {[
+            {
+              label: job.employer_name,
+              icon: (
+                <Iconify
+                  width={16}
+                  icon="solar:buildings-2-bold"
+                  sx={{ flexShrink: 0 }}
+                />
+              ),
+            },
+            {
+              label: job.location,
+              icon: (
+                <Iconify
+                  width={16}
+                  icon="mingcute:location-fill"
+                  sx={{ flexShrink: 0 }}
+                />
+              ),
+            },
+            {
+              label: `${job.wages} per hour`,
+              icon: (
+                <Iconify
+                  width={16}
+                  icon="solar:wad-of-money-bold"
+                  sx={{ flexShrink: 0 }}
+                />
+              ),
+            },
+            {
+              label: job.title,
+              icon: (
+                <Iconify
+                  width={16}
+                  icon="solar:case-bold"
+                  sx={{ flexShrink: 0 }}
+                />
+              ),
+            },
+          ].map((item) => (
+            <Box
+              key={item.label}
+              sx={{
+                gap: 0.5,
+                minWidth: 0,
+                flexShrink: 0,
+                display: "flex",
+                alignItems: "center",
+                color: "text.disabled",
+              }}
+            >
+              {item.icon}
+              <Typography variant="caption" noWrap>
+                {item.label}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+
+        <Divider sx={{ borderStyle: "dashed" }} />
+
+        <Box sx={{ p: 2 }}>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
+            onClick={handleClick}
+            sx={{
+              textTransform: "none",
+              fontWeight: 600,
+            }}
+          >
+            Apply Now
+          </Button>
+        </Box>
       </Card>
     </>
   );

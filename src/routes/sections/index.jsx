@@ -33,6 +33,7 @@ export const routesSection = [
       </Suspense>
     ),
   },
+    
 
   // Auth
   ...authRoutes,

@@ -53,6 +53,20 @@ export const poster = async (args, data) => {
 
 // ----------------------------------------------------------------------
 
+export const deleter = async (args) => {
+  const [url, config] = Array.isArray(args) ? args : [args];
+
+  try {
+    const response = await axiosInstance.delete(url, { ...config });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+// ----------------------------------------------------------------------
+
 export const downloader = async (url, fallbackFilename = "download.xlsx") => {
   try {
     const response = await axiosInstance.get(url, {

@@ -58,38 +58,39 @@ export const navData = [
     items: [
       { title: "Dashboard", path: paths.dashboard.root, icon: ICONS.dashboard },
       {
-        title: "Progress",
-        path: paths.dashboard.formTemplate.root,
+        title: "Jobs",
+        path: paths.dashboard.vacancy.root,
         icon: ICONS.file,
       },
-
-      // {
-      //   title: "Documents",
-      //   // path: paths.dashboard.campaign.root,
-      //   icon: ICONS.tour,
-      // },
 
       {
         title: "Documents",
-        path: paths.dashboard.transaction.root,
+        path: paths.dashboard.documents.root,
         icon: ICONS.file,
       },
 
       {
-        title: "Employee",
-        path: paths.dashboard.employee.root,
+        title: "Contract",
+        path: paths.dashboard.contract.root,
+        icon: ICONS.user,
+      },
+      {
+        title: "Payment History",
+        path: paths.dashboard.appointment.root,
         icon: ICONS.user,
       },
 
       {
-        title: "Profile",
+        title: "Visa Status",
         path: paths.dashboard.appointment.root,
         icon: ICONS.appointment,
+        disabled: true,
       },
       {
         title: "Faqs",
         path: paths.dashboard.creditLogs.root,
         icon: ICONS.logs,
+        disabled: true,
       },
     ],
   },

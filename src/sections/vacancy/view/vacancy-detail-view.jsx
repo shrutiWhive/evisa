@@ -10,6 +10,7 @@ import {
   Stack,
   Container,
   Button,
+  useTheme,
 } from "@mui/material";
 
 import { DashboardContent } from "src/layouts/dashboard";
@@ -19,6 +20,7 @@ import { useNavigate } from "react-router";
 
 export function VacancyDetailView({ id }) {
   const navigate = useNavigate();
+  const theme = useTheme();
   const { vacancyDetail, vacancyLoading } = useGetVacancyDetail(id);
 
   // Parse job duties into list items
@@ -76,7 +78,7 @@ export function VacancyDetailView({ id }) {
                   sx={{
                     width: { xs: 56, sm: 64 },
                     height: { xs: 56, sm: 64 },
-                    bgcolor: "#2563eb",
+                    bgcolor: theme.palette.primary.main,
                     fontSize: { xs: "1.25rem", sm: "1.5rem" },
                     fontWeight: 600,
                     mr: 2,
@@ -100,7 +102,7 @@ export function VacancyDetailView({ id }) {
                   <Chip
                     label={vacancyDetail.status}
                     size="small"
-                    color="success"
+                    color="info"
                     sx={{
                       fontWeight: 600,
                       fontSize: "0.75rem",
@@ -353,13 +355,13 @@ export function VacancyDetailView({ id }) {
                       label={benefit}
                       // icon={<CheckCircle sx={{ fontSize: 16 }} />}
                       sx={{
-                        bgcolor: "#eff6ff",
-                        color: "#2563eb",
+                        // bgcolor: "#eff6ff",
+                        bgcolor: theme.palette.primary.main,
                         fontWeight: 500,
                         fontSize: "0.875rem",
                         height: 32,
                         "& .MuiChip-icon": {
-                          color: "#2563eb",
+                          color: theme.palette.primary.main,
                           ml: 1,
                         },
                         "& .MuiChip-label": {
@@ -378,20 +380,20 @@ export function VacancyDetailView({ id }) {
                   variant="contained"
                   size="large"
                   // onClick={handleApplyNow}
-                  onClick={() => navigate("/apply")}
+                  onClick={() => navigate(`/apply/${id}`)}
                   sx={{
-                    bgcolor: "#2563eb",
-                    color: "white",
+                    bgcolor: theme.palette.primary.main,
+                    color: theme.palette.primary.contrastText,
                     fontWeight: 600,
                     px: 6,
                     py: 1.5,
                     fontSize: "1rem",
                     textTransform: "none",
                     borderRadius: 2,
-                    boxShadow: "0 4px 12px rgba(37, 99, 235, 0.3)",
+                    boxShadow: `0 4px 12px ${theme.palette.primary.main}40`, // 40 = opacity
                     "&:hover": {
-                      bgcolor: "#1d4ed8",
-                      boxShadow: "0 6px 16px rgba(37, 99, 235, 0.4)",
+                      bgcolor: theme.palette.primary.dark,
+                      boxShadow: `0 6px 16px ${theme.palette.primary.main}60`,
                       transform: "translateY(-2px)",
                       transition: "all 0.2s ease-in-out",
                     },

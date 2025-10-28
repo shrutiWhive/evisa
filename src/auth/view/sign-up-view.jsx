@@ -57,11 +57,11 @@ export const SignUpSchema = zod
     password: zod
       .string()
       .min(1, { message: "Password is required!" })
-      .min(6, { message: "Password must be at least 6 characters!" }),
+      .min(8, { message: "Password must be at least 6 characters!" }),
     password_confirmation: zod
       .string()
       .min(1, { message: "Confirm password is required!" })
-      .min(6, { message: "Confirm Password must be at least 6 characters!" }),
+      .min(8, { message: "Confirm Password must be at least 8 characters!" }),
     agreed_to_terms: zod.boolean().refine((val) => val === true, {
       message: "You must agree to the terms and conditions!",
     }),

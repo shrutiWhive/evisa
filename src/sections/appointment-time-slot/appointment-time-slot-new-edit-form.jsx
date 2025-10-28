@@ -18,6 +18,7 @@ import { createAppointmentTimeSlot, updateAppointmentTimeSlot } from "src/api";
 import { toast } from "src/components/snackbar";
 
 import { formatPatterns } from "src/utils/format-time";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 
 // ----------------------------------------------------------------------
 
@@ -30,9 +31,9 @@ export const schema = zod.object({
     message: { required: "End time is required!" },
   }),
 
-  max_bookings: zod.coerce
-    .number()
-    .min(1, { message: "Must be at least 1 booking" }),
+  date: schemaHelper.date({
+    message: { required: "Date is required!" },
+  }),
 });
 
 // ----------------------------------------------------------------------
@@ -49,7 +50,7 @@ export function AppointmentTimeSlotNewEditForm({
   const defaultValues = {
     start_time: "",
     end_time: "",
-    max_bookings: "",
+    date: "",
   };
 
   const values = useMemo(() => {
@@ -58,7 +59,7 @@ export function AppointmentTimeSlotNewEditForm({
     return {
       start_time: dayjs(selectedTimeSlot.start_time, "HH:mm:ss"),
       end_time: dayjs(selectedTimeSlot.end_time, "HH:mm:ss"),
-      max_bookings: selectedTimeSlot.max_bookings,
+      date: dayjs(selectedTimeSlot.date),
     };
   }, [selectedTimeSlot]);
 
@@ -91,9 +92,9 @@ export function AppointmentTimeSlotNewEditForm({
         end_time: dayjs(data.end_time).format("HH:mm"),
       };
 
-      const response = selectedTimeSlot
-        ? await updateAppointmentTimeSlot(selectedTimeSlot.id, timeSlotData)
-        : await createAppointmentTimeSlot(timeSlotData);
+      // const response = selectedTimeSlot
+      //   ? await updateAppointmentTimeSlot(selectedTimeSlot.id, timeSlotData)
+      //   : await createAppointmentTimeSlot(timeSlotData);
 
       handleCloseAndReset();
 
@@ -101,7 +102,7 @@ export function AppointmentTimeSlotNewEditForm({
         ? "Appointment time slot updated successfully"
         : "Appointment time slot created successfully";
 
-      toast.success(response?.message || toastMessage);
+      // toast.success(response?.message || toastMessage);
 
       dispatch(fetchAppointmentTimeSlotsRequest());
     } catch (error) {
@@ -113,6 +114,25 @@ export function AppointmentTimeSlotNewEditForm({
 
   const renderForm = () => (
     <Box sx={{ gap: 3, display: "flex", flexDirection: "column" }}>
+      <Controller
+        name="date"
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <MobileDatePicker
+            {...field}
+            label="Date"
+            value={field.value ? dayjs(field.value) : null}
+            onChange={(newValue) => field.onChange(dayjs(newValue).format())}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                error: !!error,
+                helperText: error?.message,
+              },
+            }}
+          />
+        )}
+      />
       <Controller
         name="start_time"
         control={control}
@@ -154,8 +174,6 @@ export function AppointmentTimeSlotNewEditForm({
           />
         )}
       />
-
-      <Field.Text type="number" name="max_bookings" label="Max Bookings" />
     </Box>
   );
 

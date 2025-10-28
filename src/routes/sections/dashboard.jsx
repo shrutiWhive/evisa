@@ -14,8 +14,26 @@ import { usePathname } from "../hooks";
 // Overview
 const IndexPage = lazy(() => import("src/pages/dashboard"));
 
+//vacancy
 const VacancyDetailPage = lazy(() =>
   import("src/pages/dashboard/vacancy/detail")
+);
+
+const VacancyPage = lazy(() => import("src/pages/dashboard/vacancy/list"));
+
+const PlanPage = lazy(() => import("src/pages/dashboard/plan/list"));
+const FinancePage = lazy(() => import("src/pages/dashboard/plan/finance"));
+const ProgressPage = lazy(() => import("src/pages/dashboard/progress/list"));
+
+//documents
+const DocumentPage = lazy(() => import("src/pages/dashboard/document/list"));
+
+//contract
+const ContractPage = lazy(() => import("src/pages/dashboard/contract/list"));
+
+// Appointment
+const AppointmentListPage = lazy(() =>
+  import("src/pages/dashboard/appointment/list")
 );
 
 // Profile
@@ -63,15 +81,28 @@ export const dashboardRoutes = [
         path: "vacancy-detail",
         children: [{ path: ":id", element: <VacancyDetailPage /> }],
       },
+      {
+        path: "vacancy",
+        element: <VacancyPage />,
+      },
+      {
+        path: "plan",
+        element: <PlanPage />,
+      },
+      {
+        path: "finance",
+        element: <FinancePage />,
+      },
+      {
+        path: "progress",
+        element: <ProgressPage />,
+      },
+      { path: "documents", element: <DocumentPage /> },
+      { path: "contracts", element: <ContractPage /> },
 
       {
-        path: "employee",
-        children: [
-          { index: true, element: <EmployeeListPage /> },
-          { path: "create", element: <EmployeeCreatePage /> },
-          { path: ":id", element: <EmployeeDetailPage /> },
-          { path: ":id/edit", element: <EmployeeEditPage /> },
-        ],
+        path: "appointment",
+        children: [{ index: true, element: <AppointmentListPage /> }],
       },
     ],
   },

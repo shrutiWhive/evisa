@@ -53,9 +53,9 @@ export function AppointmentListView() {
 
   const { appointments } = useAppSelector(selectAppointmentState);
 
-  useEffect(() => {
-    dispatch(fetchAppointmentsRequest());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchAppointmentsRequest());
+  // }, [dispatch]);
 
   const filters = useSetState({
     name: "",

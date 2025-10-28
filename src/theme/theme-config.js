@@ -20,21 +20,22 @@ export const themeConfig = {
    *************************************** */
   palette: {
     primary: {
-      lighter: "#E0F5FF",
-      light: "#66CCFF",
-      main: "#00A6FF",
-      dark: "#007ACC",
-      darker: "#005999",
+      lighter: "#B8F2F0",
+      light: "#4ED6D0",
+      main: "#00B4C6", // ✅ Main Aqua from logo
+      dark: "#00889C",
+      darker: "#005F6E",
       contrastText: "#ffffff",
     },
     secondary: {
-      lighter: "#D6DCF0",
-      light: "#7087C5",
-      main: "#1F3F97",
-      dark: "#182F6E",
-      darker: "#111F45",
+      lighter: "#FFD6B8",
+      light: "#FF9C4D",
+      main: "#FF6A00", // ✅ Bright Orange from logo
+      dark: "#CC5200",
+      darker: "#993D00",
       contrastText: "#ffffff",
     },
+
     info: {
       lighter: "#CAFDF5",
       light: "#61F3F3",

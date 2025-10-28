@@ -33,6 +33,7 @@ import { Form, Field } from "src/components/hook-form";
 
 import { getErrorMessage } from "../utils";
 import { FormHead } from "../components/form-head";
+import { Logo } from "src/components/logo";
 
 // ----------------------------------------------------------------------
 
@@ -304,7 +305,7 @@ export function EligibilityFormView() {
         variant="subtitle1"
         sx={{
           fontWeight: 600,
-          color: "#4A9FF5",
+          color: "secondary.main",
           fontSize: "0.95rem",
         }}
       >
@@ -470,9 +471,9 @@ export function EligibilityFormView() {
                     }
                   }}
                   sx={{
-                    color: "#4A9FF5",
+                    color: "primary.dark",
                     "&.Mui-checked": {
-                      color: "#4A9FF5",
+                      color: "primary.dark",
                     },
                   }}
                 />
@@ -751,9 +752,9 @@ export function EligibilityFormView() {
               checked={watch("agreement")}
               onChange={(e) => setValue("agreement", e.target.checked)}
               sx={{
-                color: "#4A9FF5",
+                color: "primary.dark",
                 "&.Mui-checked": {
-                  color: "#4A9FF5",
+                  color: "primary.dark",
                 },
               }}
             />
@@ -767,7 +768,7 @@ export function EligibilityFormView() {
                 href="/terms-of-service"
                 target="_blank"
                 rel="noopener"
-                sx={{ fontWeight: 600, color: "#4A9FF5" }}
+                sx={{ fontWeight: 600, color: "primary.dark" }}
               >
                 Terms and Conditions
               </Link>
@@ -795,12 +796,11 @@ export function EligibilityFormView() {
           fontSize: "1rem",
           fontWeight: 600,
           textTransform: "none",
-          bgcolor: "#4A9FF5",
+
           borderRadius: 2,
           boxShadow: "0 4px 14px rgba(74, 159, 245, 0.4)",
           "&:hover": {
-            bgcolor: "#3b8fd9",
-            boxShadow: "0 6px 20px rgba(74, 159, 245, 0.5)",
+            bgcolor: "primary.light",
           },
         }}
       >
@@ -819,14 +819,25 @@ export function EligibilityFormView() {
         }}
       >
         <Typography
+          component="div"
           variant="h1"
           sx={{
             fontWeight: 700,
             mb: 1,
             color: "#1e293b",
             fontSize: { xs: "1.5rem", md: "1.75rem" },
+            display: "flex",
+            alignItems: "center",
+            gap: 1.2,
           }}
         >
+          <Box
+            component="img"
+            src="/favicon.png" // ✅ update as needed
+            alt="Logo"
+            sx={{ width: 30, height: 30 }}
+          />
+          {/* <Logo sx={{ height: 28, width: "auto" }} /> */}
           Eligibility Application
         </Typography>
         <Typography

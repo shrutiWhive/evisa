@@ -4,19 +4,51 @@ export const endpoints = {
     signUp: "register",
     signOut: "logout",
     country: "country",
-   
   },
 
-    vacancy: {
+  vacancy: {
     eligibilityForm: "eligibility/save-eligibility-form",
     list: "vacancy",
     detail: (id) => `vacancy/show/${id}`,
-  
+  },
+  plan: {
+    list: "finance-plan",
+    assign: "finance-plan/assign-plan",
+  },
+  document: {
+    list: "documents",
+    store: "documents/store",
+    delete: (id) => `documents/delete/${id}`,
+  },
+  contract: {
+    list: "employee-contract",
+    show: "employee-contract/show",
+    upload: "employee-contract/upload",
   },
 
   profile: {
     get: "organization/show",
     update: "organization/updateOrganization",
+  },
+
+  form: {
+    mainApplicantDetail: "onboarding-form/main-applicant",
+    currentAddress: "onboarding-form/current-address",
+    contactDetail: "onboarding-form/contact-detail",
+    academicInformation: "onboarding-form/education",
+    englishlanguage: "onboarding-form/english-proficiency",
+    workExperiences: "onboarding-form/work-experience",
+    dependentInformation: "onboarding-form/dependents",
+    maritalStatus: "onboarding-form/marital",
+    emergencyContact: "onboarding-form/emergency-contact",
+    immigrationHistory: "onboarding-form/immigration-history",
+    visa: "onboarding-form/visa-records",
+    visaRejection: "onboarding-form/visa-rejections",
+    immigrationIncident: "onboarding-form/immigration-incidents",
+    criminalRecord: "onboarding-form/criminal-records",
+    inadmissibility: "onboarding-form/inadmissibility",
+    health: "onboarding-form/health",
+    finalSubmit: "onboarding-form/final-submit",
   },
 
   employee: {
@@ -26,8 +58,6 @@ export const endpoints = {
     update: (id) => `user/update/${id}`,
   },
 
-
-
   telecommunication: {
     providers: "/telcos",
     dataPack: {
@@ -36,8 +66,6 @@ export const endpoints = {
     },
     topUpAmount: "top-amount",
   },
-
-
 
   topUpAmount: "top-amount",
 
@@ -104,16 +132,16 @@ export const endpoints = {
     get: "site-setting",
   },
 
-  hr:{
-    nepaliDates:"nepali-date",
-    attendance:"monthly-report"
+  hr: {
+    nepaliDates: "nepali-date",
+    attendance: "monthly-report",
   },
-  reports:{
-    teamReports:"report/team",
-    transactions:"report/transaction",
-    sms:"report/sms",
-    topup:"report/topup",
-    package:"report/package",
-    credit:"report/credits",
-  }
+  reports: {
+    teamReports: "report/team",
+    transactions: "report/transaction",
+    sms: "report/sms",
+    topup: "report/topup",
+    package: "report/package",
+    credit: "report/credits",
+  },
 };

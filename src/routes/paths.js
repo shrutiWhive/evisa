@@ -1,3 +1,5 @@
+import { list } from "src/theme/core/components/list";
+
 const ROOTS = {
   AUTH: "/auth",
   AUTH_DEMO: "/auth-demo",
@@ -23,14 +25,28 @@ export const paths = {
   // DASHBOARD
   dashboard: {
     root: ROOTS.DASHBOARD,
+    plan: `${ROOTS.DASHBOARD}/plan`,
+    finance: `${ROOTS.DASHBOARD}/finance`,
+
+    documents: {
+      root: `${ROOTS.DASHBOARD}/documents`,
+    },
+
+    contract: {
+      root: `${ROOTS.DASHBOARD}/contracts`,
+    },
+
+    progress: {
+      root: `${ROOTS.DASHBOARD}/progress`,
+    },
 
     lead: {
       root: `${ROOTS.DASHBOARD}/lead`,
     },
 
     vacancy: {
+      root: `${ROOTS.DASHBOARD}/vacancy`,
       detail: (id) => `${ROOTS.DASHBOARD}/vacancy-detail/${id}`,
-
     },
 
     formTemplate: {
@@ -42,10 +58,6 @@ export const paths = {
 
     profile: {
       root: `${ROOTS.DASHBOARD}/profile`,
-    },
-
-    transaction: {
-      root: `${ROOTS.DASHBOARD}/transaction`,
     },
 
     leadDetail: {

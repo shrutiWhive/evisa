@@ -31,9 +31,11 @@ export const Logo = forwardRef((props, ref) => {
 
   const fallbackLogo = "/logo/logo-color.png";
 
-  const { siteSetting } = useAppSelector(selectSiteSetting);
+  const faviconLogo = "/favicon.png";
 
-  const logoSource = logoUrl || siteSetting?.favicon || fallbackLogo;
+  // const { siteSetting } = useAppSelector(selectSiteSetting);
+
+  const logoSource = logoUrl || fallbackLogo;
 
   const logoImg = (
     <img
