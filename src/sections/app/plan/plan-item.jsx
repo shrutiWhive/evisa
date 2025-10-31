@@ -28,9 +28,9 @@ import { toast } from "sonner";
 
 // ----------------------------------------------------------------------
 
-export function PlanItem({ job, sx, ...other }) {
+export function PlanItem({ job, selectedVacancyId, sx, ...other }) {
   const router = useRouter();
-
+  console.log("this is sele", selectedVacancyId);
   const renderHeader = () => (
     <Box
       sx={{
@@ -222,8 +222,14 @@ export function PlanItem({ job, sx, ...other }) {
 
   const handleClick = async () => {
     try {
-      await assignPlan({ finance_plan_id: job.id });
-      // toast.success("Plan assigned successfully!");
+      await assignPlan(selectedVacancyId, {
+        finance_plan_id: job.id,
+      });
+
+      console.log("Selected Vacancy ID:", selectedVacancyId);
+      console.log("Plan ID:", job.id);
+
+      toast.success("Plan assigned successfully!");
       router.push(paths.dashboard.finance);
     } catch (error) {
       const backendMessage =

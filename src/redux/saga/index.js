@@ -14,13 +14,13 @@ import { watchPermissionSaga } from "./permission-saga";
 
 import { watchAppointmentSaga } from "./appointment-saga";
 
-import { watchAppointmentCategorySaga } from "./appointment-category-saga";
-
-import { watchAppointmentTimeSlotSaga } from "./appointment-time-slot-saga";
-import { watchCreditLogsSaga } from "./credit-logs-saga";
+import { watchVacancySaga } from "./vacancy-saga";
 import { watchCampaignNoAuthSaga } from "./campaign-noauth-saga";
 import { watchSiteSettingSaga } from "./site-setting-saga";
 import { watchReportSaga } from "./report-saga";
+import { watchOnBoardingSaga } from "./onboardingstatus-saga";
+import { watchDocumentsSaga } from "./documents-saga";
+import { watchPlanSaga } from "./plan-saga";
 
 export function* rootSaga() {
   yield all([
@@ -38,16 +38,18 @@ export function* rootSaga() {
 
     watchAppointmentSaga(),
 
-    watchAppointmentCategorySaga(),
-
-    watchAppointmentTimeSlotSaga(),
-    
-    watchCreditLogsSaga(),
-
     watchCampaignNoAuthSaga(),
 
     watchSiteSettingSaga(),
 
     watchReportSaga(),
+
+    watchOnBoardingSaga(),
+
+    watchDocumentsSaga(),
+
+    watchVacancySaga(),
+
+    watchPlanSaga(),
   ]);
 }

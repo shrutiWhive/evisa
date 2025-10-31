@@ -17,7 +17,6 @@ import { CustomPopover } from "src/components/custom-popover";
 import { AccountButton } from "./account-button";
 import { SignOutButton } from "./sign-out-button";
 import { Button } from "@mui/material";
-import { DashboardContent } from "../dashboard";
 import { AppointmentTimeSlotNewEditForm } from "src/sections/appointment-time-slot/appointment-time-slot-new-edit-form";
 import { useState } from "react";
 

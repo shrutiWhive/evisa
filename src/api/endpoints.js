@@ -13,7 +13,8 @@ export const endpoints = {
   },
   plan: {
     list: "finance-plan",
-    assign: "finance-plan/assign-plan",
+    assign: (id) => `finance-plan/assign-plan/${id}`,
+    financeList: "finance-plan/list-assigned-plans",
   },
   document: {
     list: "documents",
@@ -21,13 +22,13 @@ export const endpoints = {
     delete: (id) => `documents/delete/${id}`,
   },
   contract: {
-    list: "employee-contract",
+    list: "contracts",
     show: "employee-contract/show",
     upload: "employee-contract/upload",
   },
 
   profile: {
-    get: "organization/show",
+    get: "employee-profile/view-profile",
     update: "organization/updateOrganization",
   },
 
@@ -49,6 +50,7 @@ export const endpoints = {
     inadmissibility: "onboarding-form/inadmissibility",
     health: "onboarding-form/health",
     finalSubmit: "onboarding-form/final-submit",
+    status: "onboarding-form/show-onboardingform-status",
   },
 
   employee: {
@@ -103,21 +105,22 @@ export const endpoints = {
   },
 
   appointment: {
-    list: "appointment",
+    list: "appointments",
+    create: "booked-appointments/store",
 
-    category: {
-      create: "appointment-category/store",
-      list: "appointment-category",
-      detail: (id) => `appointment-category/show/${id}`,
-      update: (id) => `appointment-category/update/${id}`,
-    },
+    // category: {
+    //   create: "appointment-category/store",
+    //   list: "appointment-category",
+    //   detail: (id) => `appointment-category/show/${id}`,
+    //   update: (id) => `appointment-category/update/${id}`,
+    // },
 
-    timeSlot: {
-      create: "appointment-slot/store",
-      list: "appointment-slot",
-      detail: (id) => `appointment-slot/show/${id}`,
-      update: (id) => `appointment-slot/update/${id}`,
-    },
+    // timeSlot: {
+    //   create: "appointment-slot/store",
+    //   list: "appointment-slot",
+    //   detail: (id) => `appointment-slot/show/${id}`,
+    //   update: (id) => `appointment-slot/update/${id}`,
+    // },
   },
 
   creditLogs: {

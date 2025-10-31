@@ -76,7 +76,7 @@ export const navData = [
       },
       {
         title: "Payment History",
-        path: paths.dashboard.appointment.root,
+        path: paths.dashboard.payment.root,
         icon: ICONS.user,
       },
 

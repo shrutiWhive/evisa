@@ -20,6 +20,17 @@ export function useGetVacancy() {
   return memoizedValue;
 }
 
+export const fetchVacancy = async () => {
+  try {
+    const response = await fetcher(endpoints.vacancy.list);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+
+    throw error;
+  }
+};
 
 export function useGetVacancyDetail(id) {
   const url = endpoints.vacancy.detail(id);

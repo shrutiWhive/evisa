@@ -10,6 +10,7 @@ import { useGetPlan } from "src/api/plan";
 import { PlanItem } from "./plan-item";
 import { Iconify } from "src/components/iconify";
 import { DashboardContent } from "src/layouts/dashboard";
+import { useAppSelector } from "src/redux/hooks";
 
 export function PlanList() {
   const steps = [
@@ -19,6 +20,11 @@ export function PlanList() {
     { label: "Payment", icon: "mdi:credit-card-outline" },
   ];
   const { plan } = useGetPlan();
+  const selectedVacancyId = useAppSelector(
+    (state) => state.vacancy.selectedVacancyId
+  );
+  console.log("Selected Vacancy ID:", selectedVacancyId);
+
   return (
     <>
       {/* Stepper */}
@@ -103,27 +109,30 @@ export function PlanList() {
         ))}
       </Stepper>
 
-      <Box
-        sx={{
-          gap: 3,
-          display: "grid",
-          gridTemplateColumns: {
-            xs: "repeat(1, 1fr)",
-            sm: "repeat(2, 1fr)",
-            md: "repeat(3, 1fr)",
-          },
-        }}
-      >
-        {plan.map((job) => (
-          <PlanItem
-            key={job.id}
-            job={job}
-            // editHref={paths.dashboard.job.edit(job.id)}
-            // detailsHref={paths.dashboard.job.details(job.id)}
-            // onDelete={() => handleDelete(job.id)}
-          />
-        ))}
-      </Box>
+      <DashboardContent>
+        <Box
+          sx={{
+            gap: 3,
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "repeat(1, 1fr)",
+              sm: "repeat(2, 1fr)",
+              md: "repeat(3, 1fr)",
+            },
+          }}
+        >
+          {plan.map((job) => (
+            <PlanItem
+              key={job.id}
+              job={job}
+              selectedVacancyId={selectedVacancyId}
+              // editHref={paths.dashboard.job.edit(job.id)}
+              // detailsHref={paths.dashboard.job.details(job.id)}
+              // onDelete={() => handleDelete(job.id)}
+            />
+          ))}
+        </Box>
+      </DashboardContent>
     </>
   );
 }

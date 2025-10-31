@@ -27,9 +27,9 @@ import {
 
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
 import { selectAppointmentState, selectCreditLogs } from "src/redux/selectors";
-import { fetchCreditLogsRequest } from "src/redux/actions/credit-logs-actions";
+import { fetchCreditLogsRequest } from "src/redux/actions/vacancy-actions";
 import { CreditLogsTableToolbar } from "./creditlogs-table-toolbar";
-import { AppointmentTableFiltersResult } from "../appointment/appointment-table-filters-result";
+import { AppointmentTableFiltersResult } from "../payment/appointment-table-filters-result";
 import { CreditLogsTableRow } from "./credit-logs-table-row";
 import { CreditLogsTableFiltersResult } from "./credit-logs-filter-result";
 

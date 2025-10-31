@@ -27,7 +27,7 @@ import { useSetState } from "minimal-shared/hooks";
 
 import { Scrollbar } from "src/components/scrollbar";
 import { fetchTopupRequest } from "src/redux/actions/report-action";
-import { ReportTableToolbar } from "src/sections/team-report/team-report-toolbar";
+import { ReportTableToolbar } from "src/sections/documents/documents-toolbar";
 import { SmsTableRow } from "src/sections/sms-report/sms-report-item";
 import { Iconify } from "src/components/iconify";
 import { Label } from "src/components/label";

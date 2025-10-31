@@ -2,7 +2,7 @@
 
 import { Helmet } from "react-helmet-async";
 import { CONFIG } from "src/global-config";
-import { TeamReportListView } from "src/sections/team-report/view/team-report-list-view";
+import { TeamReportListView } from "src/sections/documents/view/team-report-list-view";
 
 const metadata = { title: `Team Reports - ${CONFIG.appName}` };
 

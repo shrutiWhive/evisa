@@ -26,10 +26,12 @@ export const paths = {
   dashboard: {
     root: ROOTS.DASHBOARD,
     plan: `${ROOTS.DASHBOARD}/plan`,
+    // plan: (id) => `${ROOTS.DASHBOARD}/plan/${id}`,
     finance: `${ROOTS.DASHBOARD}/finance`,
 
     documents: {
       root: `${ROOTS.DASHBOARD}/documents`,
+      // detail
     },
 
     contract: {
@@ -47,6 +49,10 @@ export const paths = {
     vacancy: {
       root: `${ROOTS.DASHBOARD}/vacancy`,
       detail: (id) => `${ROOTS.DASHBOARD}/vacancy-detail/${id}`,
+    },
+
+    payment: {
+      root: `${ROOTS.DASHBOARD}/payment`,
     },
 
     formTemplate: {

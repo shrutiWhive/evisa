@@ -32,9 +32,7 @@ const DocumentPage = lazy(() => import("src/pages/dashboard/document/list"));
 const ContractPage = lazy(() => import("src/pages/dashboard/contract/list"));
 
 // Appointment
-const AppointmentListPage = lazy(() =>
-  import("src/pages/dashboard/appointment/list")
-);
+const PaymentListPage = lazy(() => import("src/pages/dashboard/payment/list"));
 
 // Profile
 const ProfilePage = lazy(() => import("src/pages/dashboard/profile/profile"));
@@ -101,8 +99,8 @@ export const dashboardRoutes = [
       { path: "contracts", element: <ContractPage /> },
 
       {
-        path: "appointment",
-        children: [{ index: true, element: <AppointmentListPage /> }],
+        path: "payment",
+        children: [{ index: true, element: <PaymentListPage /> }],
       },
     ],
   },

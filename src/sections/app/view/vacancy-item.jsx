@@ -42,11 +42,11 @@ export function VacancyItem({
   return (
     <>
       <Card sx={sx} {...other}>
-
         <Box sx={{ p: 3, pb: 2 }}>
           <Avatar
             alt={job.employer_name}
-            src={job.company_logo || "https://via.placeholder.com/48"}
+            // src={job.company_logo || "https://via.placeholder.com/48"}
+            src={job.employer_name}
             variant="rounded"
             sx={{ width: 48, height: 48, mb: 2 }}
           />

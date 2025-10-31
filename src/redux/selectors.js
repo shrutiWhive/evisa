@@ -26,6 +26,8 @@ export const selectSiteSetting = (state) => state.siteSetting;
 
 export const selectLeadActivity= (state) => state.lead;
 
-export const selectReport= (state) => state.report;
+export const selectPlanState = (state) => state.plan;
+
+
 
 

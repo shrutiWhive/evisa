@@ -30,7 +30,7 @@ import {
   fetchCreditRequest,
   fetchSmsRequest,
 } from "src/redux/actions/report-action";
-import { ReportTableToolbar } from "src/sections/team-report/team-report-toolbar";
+import { ReportTableToolbar } from "src/sections/documents/documents-toolbar";
 import { SmsTableRow } from "src/sections/sms-report/sms-report-item";
 import { Label } from "src/components/label";
 import { Iconify } from "src/components/iconify";

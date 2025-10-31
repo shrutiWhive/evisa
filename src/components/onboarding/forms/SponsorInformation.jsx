@@ -6,10 +6,11 @@ import { useGetVacancyDetail } from "src/api/vacancy";
 import { z } from "zod";
 
 // ✅ Step-specific Zod schema (kept for consistency)
+// Fields are optional since they're auto-filled from vacancy detail
 export const sponsorInformationSchema = z.object({
-  sponsor_name: z.string().min(1, "Sponsor name is required"),
-  sponsor_position: z.string().min(1, "Sponsor position is required"),
-  sponsor_location: z.string().min(1, "Sponsor location is required"),
+  sponsor_name: z.string().default(""),
+  sponsor_position: z.string().default(""),
+  sponsor_location: z.string().default(""),
 });
 
 export const SponsorInformation = ({ detail }) => {
@@ -19,15 +20,15 @@ export const SponsorInformation = ({ detail }) => {
     formState: { errors },
   } = useFormContext();
 
-  // ✅ Prefill form values from `detail`
+  // ✅ Prefill form values from `vacancyDetail`
   // This ensures the values are part of form data (for submission)
   useEffect(() => {
-    if (detail) {
+    if (vacancyDetail) {
       setValue("sponsor_name", vacancyDetail.title || "");
       setValue("sponsor_position", vacancyDetail.title || "");
       setValue("sponsor_location", vacancyDetail.location || "");
     }
-  }, [detail, setValue]);
+  }, [vacancyDetail, setValue]);
 
   return (
     <Box id="section-3" sx={{ mb: 6 }}>

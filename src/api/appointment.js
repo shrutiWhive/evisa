@@ -4,7 +4,7 @@ import { endpoints } from "./endpoints";
 
 // ----------------------------------------------------------------------
 
-export const fetchAppointments = async () => {
+export const fetchAppointmentDate = async () => {
   try {
     const response = await fetcher(endpoints.appointment.list);
 
@@ -16,64 +16,9 @@ export const fetchAppointments = async () => {
   }
 };
 
-// ----------------------------------------------------------------------
-
-export const fetchAppointmentCategories = async () => {
+export const createAppointment = async (data) => {
   try {
-    const response = await fetcher(endpoints.appointment.category.list);
-
-    return response.data || [];
-  } catch (error) {
-    console.error(error);
-
-    throw error;
-  }
-};
-
-export const createAppointmentCategory = async (data) => {
-  try {
-    const response = await poster(endpoints.appointment.category.create, data);
-
-    return response;
-  } catch (error) {
-    console.error(error);
-
-    throw error;
-  }
-};
-
-export const updateAppointmentCategory = async (id, data) => {
-  try {
-    const response = await poster(
-      endpoints.appointment.category.update(id),
-      data
-    );
-
-    return response;
-  } catch (error) {
-    console.error(error);
-
-    throw error;
-  }
-};
-
-// ----------------------------------------------------------------------
-
-export const fetchAppointmentTimeSlots = async () => {
-  try {
-    const response = await fetcher(endpoints.appointment.timeSlot.list);
-
-    return response.data || [];
-  } catch (error) {
-    console.error(error);
-
-    throw error;
-  }
-};
-
-export const createAppointmentTimeSlot = async (data) => {
-  try {
-    const response = await poster(endpoints.appointment.timeSlot.create, data);
+    const response = await poster(endpoints.appointment.create, data);
 
     return response;
   } catch (error) {

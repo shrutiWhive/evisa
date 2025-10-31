@@ -5,16 +5,20 @@ import {
   fetchAppointmentsSuccess,
   fetchAppointmentsFailure,
 } from "../actions";
-
-import { fetchAppointments } from "src/api";
+import { fetchAppointmentDate } from "src/api";
 
 function* fetchAppointmentsSaga() {
   try {
-    const response = yield call(fetchAppointments);
+    const response = yield call(fetchAppointmentDate);
+    // Extract the data array from the API response
+    // const appointmentsData = response || [];
 
     yield put(fetchAppointmentsSuccess(response));
   } catch (error) {
-    yield put(fetchAppointmentsFailure());
+    console.error("Fetch appointments error:", error);
+    yield put(
+      fetchAppointmentsFailure(error?.message || "Failed to fetch appointments")
+    );
   }
 }
 

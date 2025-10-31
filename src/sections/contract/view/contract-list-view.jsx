@@ -1,84 +1,109 @@
 import {
   Box,
   Button,
-  Card,
-  CardMedia,
   Chip,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Card,
   IconButton,
-  Typography,
-  Grid,
+  MenuItem,
+  Fab,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-import {
-  addContract,
-  useGetContract,
-  useGetContractList,
-  useGetDocument,
-} from "src/api/document";
+import { addContract } from "src/api/document";
+import { useGetVacancy } from "src/api/vacancy";
 import { Iconify } from "src/components/iconify";
 import { DashboardContent } from "src/layouts/dashboard";
 import { fDateTime } from "src/utils/format-time";
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AddDocumentDialog } from "src/sections/document/dialog/add-document";
 import { toast } from "sonner";
 import { paths } from "src/routes/paths";
 import { CustomBreadcrumbs } from "src/components/custom-breadcrumbs";
+import { useAppDispatch, useAppSelector } from "src/redux/hooks";
+import { fetchDocumentsRequest } from "src/redux/actions/documents-actions";
+import {
+  emptyRows,
+  TableEmptyRows,
+  TableHeadCustom,
+  TableNoData,
+  TablePaginationCustom,
+  TableSelectedAction,
+  useTable,
+} from "src/components/table";
+import { Scrollbar } from "src/components/scrollbar";
+import { useSetState } from "minimal-shared/hooks";
+import { DocumentsTableToolbar } from "src/sections/documents/documents-toolbar";
+import { DocumentsTableRow } from "src/sections/documents/documents-item";
+import { DocumentsTableFiltersResult } from "src/sections/documents/documents-result-filter";
+
+const TABLE_HEAD = [
+  { id: "sn", label: "S.N." },
+  { id: "contract_number", label: "Contract #" },
+  { id: "vacancy", label: "Position" },
+  { id: "employer", label: "Employer" },
+  { id: "location", label: "Location" },
+  { id: "wages", label: "Wages" },
+  { id: "status", label: "Status" },
+  { id: "unsigned_pdf", label: "Unsigned PDF" },
+  { id: "signed_pdf", label: "Signed PDF" },
+  { id: "generated_at", label: "Generated At" },
+];
 
 export function ContractList() {
+  const table = useTable();
+  const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
+
   const {
-    contractList,
-    contractListLoading,
-    contractListError,
-    contractMutate,
-  } = useGetContractList();
-  const [openDialog, setOpenDialog] = useState(false);
+    documents = [],
+    isLoading,
+    error,
+  } = useAppSelector(
+    (state) => state.documents || { documents: [], isLoading: false }
+  );
 
-  const getStatusColor = (status) => {
-    switch (status?.toLowerCase()) {
-      case "approved":
-        return { bgcolor: "#D2F3EE", color: "#2BA597" };
-      case "rejected":
-        return { bgcolor: "#FFE7E7", color: "#D32F2F" };
-      case "pending":
-      default:
-        return { bgcolor: "#FFF4E5", color: "#F57C00" };
-    }
-  };
+  const filters = useSetState({
+    vacancy_id: "",
+    status: "",
+  });
 
-  const handleAddNew = () => {
-    setOpenDialog(true);
-  };
+  // Fetch contracts on mount or when filters change
+  useEffect(() => {
+    const payload = {};
+    if (filters.state.vacancy_id)
+      payload.vacancy_id = Number(filters.state.vacancy_id);
+    if (filters.state.status) payload.status = filters.state.status;
 
-  const handleSaveDocument = async ({ fileName, file }) => {
-    try {
-      // convert file to base64
-      const base64 = await toBase64(file);
+    dispatch(fetchDocumentsRequest(payload));
+  }, [dispatch, filters.state.vacancy_id, filters.state.status]);
 
-      const payload = {
-        signed_contract_file: base64,
-      };
+  console.log("this is documents", documents);
 
-      await addContract(payload);
-      toast.success("Contract uploaded successfully!");
+  const handleFilterVacancy = useCallback(
+    (event) => {
+      filters.setState({ vacancy_id: event.target.value });
+      table.onResetPage();
+    },
+    [filters, table]
+  );
 
-      setOpenDialog(false);
-      contractMutate();
-    } catch (error) {
-      const message =
-        error?.response?.data?.message ||
-        error?.message ||
-        "Failed to upload document";
-      toast.error(message);
-    }
-  };
+  const handleFilterStatus = useCallback(
+    (event) => {
+      filters.setState({ status: event.target.value });
+      table.onResetPage();
+    },
+    [filters, table]
+  );
 
-  // helper to convert file
-  const toBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
+  const dataFiltered = documents;
+  const notFound = !dataFiltered.length && !isLoading;
+  const canReset = !!filters.state.vacancy_id || !!filters.state.status;
 
   return (
     <DashboardContent>
@@ -91,235 +116,107 @@ export function ContractList() {
           },
           { name: "List" },
         ]}
-        sx={{ mb: { xs: 3, md: 5 } }}
+        sx={{
+          mb: { xs: 2, md: 5 },
+          "& .MuiBreadcrumbs-ol": {
+            flexWrap: { xs: "wrap", sm: "nowrap" },
+          },
+        }}
       />
-      <Box>
+      <Box sx={{ position: "relative" }}>
         {/* Header */}
-        <Box
+        <Card
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: 4,
+            borderRadius: { xs: 1, md: 2 },
+            overflow: "hidden",
           }}
         >
-          {/* <Typography
-            variant="h4"
-            sx={{
-              color: "#114B46",
-              fontWeight: 700,
-            }}
-          >
-            Contracts
-          </Typography> */}
-          <Button
-            variant="outlined"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={handleAddNew}
-            sx={{
-              borderColor: "#2BA597",
-              color: "#2BA597",
-              textTransform: "none",
-              fontWeight: 600,
-              px: 3,
-              py: 1,
-              "&:hover": {
-                borderColor: "#1D7E73",
-                bgcolor: "rgba(43, 165, 151, 0.04)",
-              },
-            }}
-          >
-            Upload signed contract
-          </Button>
-        </Box>
+          <DocumentsTableToolbar
+            filters={filters}
+            onResetPage={table.onResetPage}
+          />
 
-        {/* Documents Grid */}
-        <Grid container spacing={3}>
-          {contractList.map((doc) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={doc.id}>
-              <Card
+          {canReset && (
+            <DocumentsTableFiltersResult
+              filters={filters}
+              totalResults={dataFiltered.length}
+              onResetPage={table.onResetPage}
+              sx={{ p: 2.5, pt: 0 }}
+            />
+          )}
+
+          <Box sx={{ position: "relative" }}>
+            <Scrollbar
+              sx={{
+                maxHeight: { xs: "calc(100vh - 300px)", md: "auto" },
+              }}
+            >
+              <Table
+                size={table.dense ? "small" : "medium"}
                 sx={{
-                  position: "relative",
-                  borderRadius: 2,
-                  overflow: "hidden",
-                  transition: "all 0.3s ease",
-                  border: "1px solid #D2F3EE",
-                  "&:hover": {
-                    boxShadow: "0 8px 24px rgba(43, 165, 151, 0.16)",
-                    transform: "translateY(-4px)",
+                  minWidth: { xs: 800, md: 960 },
+                  "& .MuiTableCell-root": {
+                    fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                    padding: { xs: "8px 4px", sm: "12px 16px" },
                   },
                 }}
               >
-                {/* Delete Button (optional - not implemented) */}
-                {/* <IconButton
-                  sx={{
-                    position: "absolute",
-                    top: 8,
-                    right: 8,
-                    bgcolor: "rgba(211, 47, 47, 0.9)",
-                    color: "#fff",
-                    zIndex: 2,
-                    "&:hover": {
-                      bgcolor: "rgba(211, 47, 47, 1)",
-                    },
-                  }}
-                  size="small"
-                >
-                  <Iconify icon="eva:trash-2-fill" width={18} />
-                </IconButton> */}
-                {/* Document Image Preview */}
-                {/* <Box
-                  sx={{
-                    position: "relative",
-                    paddingTop: "133.33%", // 3:4 aspect ratio
-                    bgcolor: "#f5f5f5",
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    image={doc.file_path}
-                    alt={doc.document_type?.name || "Contract"}
-                    sx={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
+                <TableHeadCustom
+                  order={table.order}
+                  orderBy={table.orderBy}
+                  headCells={TABLE_HEAD}
+                  rowCount={dataFiltered.length}
+                  numSelected={table.selected.length}
+                  onSort={table.onSort}
+                />
+
+                <TableBody>
+                  {dataFiltered
+                    .slice(
+                      table.page * table.rowsPerPage,
+                      table.page * table.rowsPerPage + table.rowsPerPage
+                    )
+                    .map((row, index) => (
+                      <DocumentsTableRow
+                        key={row.id}
+                        serialNumber={index + 1}
+                        row={row}
+                      />
+                    ))}
+
+                  <TableEmptyRows
+                    height={table.dense ? 56 : 76}
+                    emptyRows={emptyRows(
+                      table.page,
+                      table.rowsPerPage,
+                      dataFiltered.length
+                    )}
                   />
-                </Box> */}
-                {/* Document Info + View PDF Button */}
-                <Box sx={{ p: 2 }}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                      mb: 1,
-                    }}
-                  >
-                    <Typography
-                      variant="subtitle1"
-                      sx={{
-                        color: "#114B46",
-                        fontWeight: 600,
-                        textTransform: "capitalize",
-                        flex: 1,
-                      }}
-                    >
-                      {doc.document_type?.name || "Contract"}
-                    </Typography>
-                    <Chip
-                      label={doc.status}
-                      size="small"
-                      sx={{
-                        ...getStatusColor(doc.status),
-                        fontWeight: 500,
-                        fontSize: 11,
-                        height: 22,
-                      }}
-                    />
-                  </Box>
 
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      color: "#4F8E88",
-                      display: "block",
-                      mb: 0.5,
-                    }}
-                  >
-                    Uploaded: {fDateTime(doc.signed_date)}
-                  </Typography>
-
-                  {doc.remark && (
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        color: "#4F8E88",
-                        display: "block",
-                        fontStyle: "italic",
-                        mb: 1,
-                      }}
-                    >
-                      {doc.remark}
-                    </Typography>
-                  )}
-
-                  {/* View PDF Button */}
-                  <Button
-                    variant="outlined"
-                    fullWidth
-                    startIcon={<Iconify icon="mdi:file-pdf-box" />}
-                    onClick={() => window.open(doc.file_path, "_blank")}
-                    sx={{
-                      mt: 1,
-                      textTransform: "none",
-                      borderColor: "#2BA597",
-                      color: "#2BA597",
-                      fontWeight: 600,
-                      "&:hover": {
-                        borderColor: "#1D7E73",
-                        bgcolor: "rgba(43, 165, 151, 0.04)",
-                      },
-                    }}
-                  >
-                    View PDF
-                  </Button>
-                </Box>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-
-        {/* Empty State */}
-        {contractList.length === 0 && (
-          <Box
-            sx={{
-              textAlign: "center",
-              py: 8,
-            }}
-          >
-            <Iconify
-              icon="eva:file-text-outline"
-              width={64}
-              height={64}
-              sx={{ color: "#CDE2E0", mb: 2 }}
-            />
-            <Typography variant="h6" sx={{ color: "#4F8E88", mb: 1 }}>
-              No contracts uploaded
-            </Typography>
-            <Typography variant="body2" sx={{ color: "#4F8E88", mb: 3 }}>
-              Get started by uploading your first contract
-            </Typography>
-            <Button
-              variant="contained"
-              startIcon={<Iconify icon="eva:plus-fill" />}
-              onClick={handleAddNew}
-              sx={{
-                bgcolor: "#2BA597",
-                color: "#ffffff",
-                textTransform: "none",
-                fontWeight: 600,
-                px: 4,
-                "&:hover": {
-                  bgcolor: "#1D7E73",
-                },
-              }}
-            >
-              Upload Contract
-            </Button>
+                  <TableNoData notFound={notFound} />
+                </TableBody>
+              </Table>
+            </Scrollbar>
           </Box>
-        )}
-      </Box>
 
-      {/* Add Contract Dialog */}
-      <AddDocumentDialog
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-        onSave={handleSaveDocument}
-      />
+          <TablePaginationCustom
+            page={table.page}
+            dense={table.dense}
+            count={dataFiltered.length}
+            rowsPerPage={table.rowsPerPage}
+            onPageChange={table.onChangePage}
+            onChangeDense={table.onChangeDense}
+            onRowsPerPageChange={table.onChangeRowsPerPage}
+            sx={{
+              "& .MuiTablePagination-toolbar": {
+                flexWrap: { xs: "wrap", sm: "nowrap" },
+                minHeight: { xs: "auto", sm: 64 },
+                py: { xs: 1, sm: 0 },
+              },
+            }}
+          />
+        </Card>
+      </Box>
     </DashboardContent>
   );
 }

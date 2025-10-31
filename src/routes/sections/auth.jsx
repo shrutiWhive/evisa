@@ -33,7 +33,7 @@ export const authRoutes = [
           <GuestGuard>
             <AuthCenteredLayout
               slotProps={{
-                section: { title: "Hi, Welcome back" },
+                section: { title: "Book an Appointment" },
               }}
             >
               <SignInPage />

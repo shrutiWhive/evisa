@@ -51,38 +51,77 @@ export const OnboardingSidebar = ({
       }}
     >
       <List>
-        {ONBOARDING_STEPS.map((step, index) => (
-          <ListItemButton
-            key={step.id}
-            onClick={() => onItemClick(step.id)}
-            sx={{
-              borderRadius: 1,
-              mx: 1,
-              mb: 0.5,
-              "&:hover": {
-                backgroundColor: theme.palette.action.hover, // ✅ use hover color
-              },
-              position: "relative",
-            }}
-          >
-            <ListItemText
-              primary={step.label}
-              primaryTypographyProps={{
-                fontSize: 14,
-                color: theme.palette.text.primary,
-              }}
-            />
-            <Iconify
-              icon="eva:close-fill"
-              width={16}
+        {ONBOARDING_STEPS.map((step, index) => {
+          const isAccessible = isStepAccessible(index);
+          const isCurrentStep = index === currentStep;
+          const isCompleted = completedSteps.has(index);
+
+          return (
+            <ListItemButton
+              key={step.id}
+              onClick={() => isAccessible && onItemClick(index)}
+              disabled={!isAccessible}
               sx={{
-                color: theme.palette.text.disabled,
-                position: "absolute",
-                right: 8,
+                borderRadius: 1,
+                mx: 1,
+                mb: 0.5,
+                backgroundColor: isCurrentStep
+                  ? theme.palette.primary.lighter
+                  : "transparent",
+                "&:hover": {
+                  backgroundColor: isAccessible
+                    ? theme.palette.action.hover
+                    : "transparent",
+                },
+                position: "relative",
+                opacity: isAccessible ? 1 : 0.5,
+                cursor: isAccessible ? "pointer" : "not-allowed",
               }}
-            />
-          </ListItemButton>
-        ))}
+            >
+              <ListItemText
+                primary={step.label}
+                primaryTypographyProps={{
+                  fontSize: 14,
+                  color: isCurrentStep
+                    ? theme.palette.primary.main
+                    : theme.palette.text.primary,
+                  fontWeight: isCurrentStep ? 600 : 400,
+                }}
+              />
+              {isCompleted ? (
+                <Iconify
+                  icon="eva:checkmark-circle-2-fill"
+                  width={20}
+                  sx={{
+                    color: theme.palette.success.main,
+                    position: "absolute",
+                    right: 8,
+                  }}
+                />
+              ) : isCurrentStep ? (
+                <Iconify
+                  icon="eva:arrow-ios-forward-fill"
+                  width={16}
+                  sx={{
+                    color: theme.palette.primary.main,
+                    position: "absolute",
+                    right: 8,
+                  }}
+                />
+              ) : (
+                <Iconify
+                  icon="eva:radio-button-off-outline"
+                  width={16}
+                  sx={{
+                    color: theme.palette.text.disabled,
+                    position: "absolute",
+                    right: 8,
+                  }}
+                />
+              )}
+            </ListItemButton>
+          );
+        })}
       </List>
     </Box>
   );

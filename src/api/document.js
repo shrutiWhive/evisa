@@ -81,6 +81,26 @@ export function useGetContractList() {
   return memoizedValue;
 }
 
+export const fetchContract = async (filters) => {
+  try {
+    // Build URL with query parameters if filters provided
+    let url = endpoints.contract.list;
+    
+    if (filters && Object.keys(filters).length > 0) {
+      const params = new URLSearchParams();
+      if (filters.vacancy_id) params.append('vacancy_id', filters.vacancy_id);
+      if (filters.status) params.append('status', filters.status);
+      url = `${url}?${params.toString()}`;
+    }
+
+    const response = await fetcher(url);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const addContract = async (data) => {
   try {
     const response = await poster(endpoints.contract.upload, data);

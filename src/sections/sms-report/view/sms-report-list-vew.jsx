@@ -27,11 +27,11 @@ import { useSetState } from "minimal-shared/hooks";
 
 import { Scrollbar } from "src/components/scrollbar";
 import { fetchSmsRequest } from "src/redux/actions/report-action";
-import { ReportTableToolbar } from "src/sections/team-report/team-report-toolbar";
+import { ReportTableToolbar } from "src/sections/documents/documents-toolbar";
 import { SmsTableRow } from "../sms-report-item";
 import { Label } from "src/components/label";
 import { Iconify } from "src/components/iconify";
-import { TeamReportTableFiltersResult } from "src/sections/team-report/team-report-result-filter";
+import { TeamReportTableFiltersResult } from "src/sections/documents/documents-result-filter";
 import { fIsAfter, fIsBetween } from "src/utils";
 import { SmsTableToolbar } from "../sms-table-toolbar";
 import { SmsReportTableFiltersResult } from "../sms-report-table-filter-result";

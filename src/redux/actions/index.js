@@ -12,10 +12,12 @@ export * from "./permission-actions";
 
 export * from "./appointment-actions";
 
-export * from "./appointment-category-actions";
-
-export * from "./appointment-time-slot-actions";
-
 export * from "./site-setting-actions";
 
 export * from "./lead-actions";
+
+export * from "./onboardingstatus-actions";
+
+export * from "./documents-actions";
+
+export * from "./plan-action";

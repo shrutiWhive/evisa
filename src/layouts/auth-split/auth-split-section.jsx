@@ -2,8 +2,14 @@ import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import Zoom from "@mui/material/Zoom";
 import { RouterLink } from "src/routes/components";
 import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "src/redux/hooks";
+import { fetchAppointmentsRequest } from "src/redux/actions";
+import { AppointmentCalendar } from "src/components/calendar/appointment-calendar";
+import { AppointmentBookingDialog } from "src/components/calendar/appointment-booking-dialog";
 
 // ----------------------------------------------------------------------
 
@@ -13,12 +19,72 @@ export function AuthSplitSection(props) {
     method,
     methods,
     layoutQuery = "md",
-    title = "EB3 Visa",
+    title = "Book an Appointment",
     imgUrl = `/assets/illustrations/illustration-dashboard.webp`,
-    subtitle = "Simplifying EB3 with Technology and Trust",
+    subtitle = "Your Gateway to the American Dream 🇺🇸",
     disableSplit,
     ...other
   } = props;
+
+  const dispatch = useAppDispatch();
+  const [animate, setAnimate] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTimeSlots, setSelectedTimeSlots] = useState([]);
+
+  // Get appointments from Redux store
+  const { appointments, isLoading } = useAppSelector(
+    (state) => state.appointment || { appointments: [], isLoading: false }
+  );
+
+  // Fetch appointments when component mounts
+  useEffect(() => {
+    dispatch(fetchAppointmentsRequest());
+  }, [dispatch]);
+
+  // Fetch appointments when component mounts
+  useEffect(() => {
+    dispatch(fetchAppointmentsRequest());
+  }, [dispatch]);
+
+  // Animation effect
+  useEffect(() => {
+    // Initial animation trigger
+    const initialTimer = setTimeout(() => {
+      setAnimate(true);
+    }, 100);
+
+    // Set up interval to repeat animation every second
+    const animationInterval = setInterval(() => {
+      setAnimate(false); // Reset
+      setTimeout(() => {
+        setAnimate(true); // Re-trigger
+      }, 50);
+    }, 1000); // Repeat every 1 second
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(animationInterval);
+    };
+  }, []); // Run once on mount
+
+  // Handle calendar event click
+  const handleEventClick = (date, timeSlots) => {
+    setSelectedDate(date);
+    setSelectedTimeSlots(timeSlots);
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    setSelectedDate(null);
+    setSelectedTimeSlots([]);
+  };
+
+  const handleBookingSuccess = () => {
+    // Refresh appointments after successful booking
+    dispatch(fetchAppointmentsRequest());
+  };
 
   return (
     <Box
@@ -44,29 +110,77 @@ export function AuthSplitSection(props) {
       {...other}
     >
       <div>
-        <Typography variant="h3" sx={{ textAlign: "center", color: "white" }}>
-          {title}
-        </Typography>
-
-        {subtitle && (
+        <Zoom in={animate} timeout={500}>
           <Typography
+            variant="h3"
+            key={animate ? "title-animated" : "title-reset"}
             sx={{
-              // color: "text.secondary",
               textAlign: "center",
-              mt: 2,
               color: "white",
+              animation: animate ? "popup 0.4s ease-out" : "none",
+              "@keyframes popup": {
+                "0%": {
+                  transform: "scale(0.7)",
+                  opacity: 0,
+                },
+                "60%": {
+                  transform: "scale(1.1)",
+                },
+                "100%": {
+                  transform: "scale(1)",
+                  opacity: 1,
+                },
+              },
             }}
           >
-            {subtitle}
+            {title}
           </Typography>
+        </Zoom>
+
+        {subtitle && (
+          <Zoom in={animate} timeout={500}>
+            <Typography
+              key={animate ? "animated" : "reset"}
+              sx={{
+                textAlign: "center",
+                mt: 2,
+                color: "white",
+                animation: animate ? "popup 0.4s ease-out" : "none",
+                "@keyframes popup": {
+                  "0%": {
+                    transform: "scale(0.7)",
+                    opacity: 0,
+                  },
+                  "60%": {
+                    transform: "scale(1.1)",
+                  },
+                  "100%": {
+                    transform: "scale(1)",
+                    opacity: 1,
+                  },
+                },
+              }}
+            >
+              {subtitle}
+            </Typography>
+          </Zoom>
         )}
       </div>
 
-      <Box
-        component="img"
-        alt="Dashboard illustration"
-        src={imgUrl}
-        sx={{ width: 1, aspectRatio: "4/3", objectFit: "cover" }}
+      {/* Calendar replacing image */}
+      <AppointmentCalendar
+        appointments={appointments}
+        onEventClick={handleEventClick}
+        isLoading={isLoading}
+      />
+
+      {/* Booking Dialog */}
+      <AppointmentBookingDialog
+        open={dialogOpen}
+        onClose={handleDialogClose}
+        selectedDate={selectedDate}
+        timeSlots={selectedTimeSlots}
+        onBookingSuccess={handleBookingSuccess}
       />
 
       {!!methods?.length && method && (

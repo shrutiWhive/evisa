@@ -1,4 +1,4 @@
-import { poster } from "src/lib";
+import { fetcher, poster } from "src/lib";
 import { endpoints } from "./endpoints";
 
 export const saveMainApplicantDetail = async (data) => {
@@ -36,7 +36,6 @@ export const saveContactDetail = async (data) => {
     throw error;
   }
 };
-
 
 export const saveAcademicInformation = async (data) => {
   try {
@@ -206,5 +205,14 @@ export const saveFinalSubmit = async (data) => {
   }
 };
 
+export const fetchOnBoardingStatus = async (id) => {
+  try {
+    const response = await fetcher(endpoints.form.status);
 
+    return response.data;
+  } catch (error) {
+    console.error(error);
 
+    throw error;
+  }
+};

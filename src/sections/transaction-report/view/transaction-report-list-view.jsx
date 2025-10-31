@@ -19,7 +19,7 @@ import { useSetState } from "minimal-shared/hooks";
 import { Scrollbar } from "src/components/scrollbar";
 import { fetchTransactionRequest } from "src/redux/actions/report-action";
 import { TransactionTableRow } from "../transaction-report-item";
-import { ReportTableToolbar } from "src/sections/team-report/team-report-toolbar";
+import { ReportTableToolbar } from "src/sections/documents/documents-toolbar";
 
 const TABLE_HEAD = [
   { id: "sn", label: "SN" },

@@ -20,9 +20,33 @@ export function useGetPlan() {
   return memoizedValue;
 }
 
-export const assignPlan = async (data) => {
+export const fetchPlan = async (id) => {
   try {
-    const response = await poster(endpoints.plan.assign, data);
+    const response = await fetcher(endpoints.plan.list);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+
+    throw error;
+  }
+};
+
+export const fetchFinancePlan = async (id) => {
+  try {
+    const response = await fetcher(endpoints.plan.financeList);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+
+    throw error;
+  }
+};
+
+export const assignPlan = async (id, data) => {
+  try {
+    const response = await poster(endpoints.plan.assign(id), data);
 
     return response;
   } catch (error) {
