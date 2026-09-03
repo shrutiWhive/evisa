@@ -47,6 +47,7 @@ export const processingInformationSchema = z
             }),
           expedition_date: z.string().min(1, "Issued date is required"),
           expiration_date: z.string().min(1, "Expiry date is required"),
+          notes: z.string().optional().default(""),
         }),
       )
       .optional()
@@ -88,6 +89,7 @@ export const processingInformationSchema = z
                   ),
                 expedition_date: z.string().min(1, "Issued date is required"),
                 expiration_date: z.string().min(1, "Expiry date is required"),
+                notes: z.string().optional().default(""),
               }),
             )
             .optional()
@@ -466,6 +468,25 @@ const VisaRecordsSection = ({
               )}
             />
           </Grid>
+          <Grid size={{ xs: 12 }}>
+            <Controller
+              name={`${fieldPrefix}.${index}.notes`}
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Notes"
+                  fullWidth
+                  multiline
+                  rows={3}
+                  placeholder="Enter any additional notes about this visa record"
+                  error={!!errors?.[fieldPrefix]?.[index]?.notes?.message}
+                  helperText={errors?.[fieldPrefix]?.[index]?.notes?.message}
+                />
+              )}
+            />
+          </Grid>
         </Grid>
       </Box>
     ))}
@@ -482,11 +503,13 @@ const VisaRecordsSection = ({
               type: "",
               expedition_date: "",
               expiration_date: "",
+              notes: "",
             }
           : {
               type: "",
               expedition_date: "",
               expiration_date: "",
+              notes: "",
             };
         onAppend(newRecord);
       }}
@@ -662,6 +685,35 @@ const DependentVisaRecordsField = ({
                 )}
               />
             </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Controller
+                name={`dependents.${dependentIndex}.visa_records.${index}.notes`}
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Notes"
+                    fullWidth
+                    multiline
+                    rows={2}
+                    size="small"
+                    placeholder="Enter any additional notes"
+                    error={
+                      !!errors?.dependents?.[dependentIndex]?.visa_records?.[
+                        index
+                      ]?.notes?.message
+                    }
+                    helperText={
+                      errors?.dependents?.[dependentIndex]?.visa_records?.[
+                        index
+                      ]?.notes?.message
+                    }
+                  />
+                )}
+              />
+            </Grid>
           </Grid>
         </Box>
       ))}
@@ -675,6 +727,7 @@ const DependentVisaRecordsField = ({
             type: "",
             expedition_date: "",
             expiration_date: "",
+            notes: "",
           });
         }}
         sx={{
@@ -756,6 +809,7 @@ function ProcessingInformation({ vacancyData, vacancyId }) {
           type: "",
           expedition_date: "",
           expiration_date: "",
+          notes: "",
         });
       }
     } else if (
@@ -815,6 +869,7 @@ function ProcessingInformation({ vacancyData, vacancyId }) {
               type: "",
               expedition_date: "",
               expiration_date: "",
+              notes: "",
             },
           ],
         });
@@ -1947,6 +2002,7 @@ function ProcessingInformation({ vacancyData, vacancyId }) {
                       type: "",
                       expedition_date: "",
                       expiration_date: "",
+                      notes: "",
                     },
                   ],
                 });

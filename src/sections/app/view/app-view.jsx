@@ -370,7 +370,9 @@ export function AppView() {
   const handleStepClick = (stepStatus) => {
     const statusLower = stepStatus.toLowerCase();
 
-    if (statusLower === "contract") {
+    if (statusLower === "job_selection") {
+      navigate(paths.dashboard.vacancy.root);
+    } else if (statusLower === "contract") {
       navigate(paths.dashboard.contract.root);
     } else if (statusLower === "payment") {
       navigate(paths.dashboard.payment.root);
@@ -828,7 +830,8 @@ export function AppView() {
                   const isReached = isCompleted || index === activeStep;
                   const isClickable =
                     isReached &&
-                    (step.status === "contract" ||
+                    (step.status === "job_selection" ||
+                      step.status === "contract" ||
                       step.status === "payment" ||
                       step.status === "visa_wait");
 
@@ -1695,9 +1698,11 @@ export function AppView() {
           </Grid>
 
           {/* Right Column */}
+
           <Grid size={{ xs: 12, md: 4 }}>
             {/* Finance Overview */}
             <Card
+              onClick={() => navigate(paths.dashboard.payment.root)}
               sx={{
                 p: 3,
                 mb: 3,
@@ -1705,6 +1710,9 @@ export function AppView() {
                 bgcolor: "white",
                 border: "1px solid",
                 borderColor: "divider",
+                cursor: "pointer", // ← add this
+                transition: "box-shadow 0.2s", // ← add this
+                "&:hover": { boxShadow: 4 },
               }}
             >
               <Stack spacing={3}>

@@ -64,6 +64,7 @@ export const endpoints = {
     finalSubmit: "onboarding-form/final-submit",
     status: "onboarding-form/show-onboardingform-status",
     immigrationType: (id) => `onboarding-form/get-immigration-types/${id}`,
+    steps: "onboarding-steps",
   },
 
   employee: {

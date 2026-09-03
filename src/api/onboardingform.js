@@ -15,7 +15,6 @@ export const saveProcessingInformation = async (data) => {
   }
 };
 
-
 export const saveMainApplicantDetail = async (data) => {
   try {
     const response = await poster(endpoints.form.mainApplicantDetail, data);
@@ -238,14 +237,14 @@ export function useGetImmigrationTypes(id) {
   const { data, isLoading, error, mutate } = useSWR(url, fetcher);
 
   const immigrationTypes = data?.data || [];
-  
+
   // Log available immigration type IDs when data loads
   if (immigrationTypes.length > 0) {
     console.log("✅ Immigration Types loaded:", {
       count: immigrationTypes.length,
-      ids: immigrationTypes.map(t => t.id),
-      minId: Math.min(...immigrationTypes.map(t => t.id)),
-      maxId: Math.max(...immigrationTypes.map(t => t.id)),
+      ids: immigrationTypes.map((t) => t.id),
+      minId: Math.min(...immigrationTypes.map((t) => t.id)),
+      maxId: Math.max(...immigrationTypes.map((t) => t.id)),
     });
   }
 
@@ -256,7 +255,24 @@ export function useGetImmigrationTypes(id) {
       immigrationTypeError: error,
       mutateImmigrationType: mutate,
     }),
-    [immigrationTypes, isLoading, error, mutate]
+    [immigrationTypes, isLoading, error, mutate],
+  );
+
+  return memoizedValue;
+}
+
+export function useGetStepDescription() {
+  const url = endpoints.form.steps;
+
+  const { data, isLoading, error } = useSWR(url, fetcher);
+
+  const memoizedValue = useMemo(
+    () => ({
+      steps: data?.data || [],
+      stepsLoading: isLoading,
+      stepsError: error,
+    }),
+    [data?.data, isLoading, error],
   );
 
   return memoizedValue;

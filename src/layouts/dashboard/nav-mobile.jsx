@@ -70,8 +70,8 @@ export function NavMobile({
       }}
     >
       {slots?.topArea ?? (
-        <Box sx={{ pl: 3.5, pt: 2.5, pb: 1 }}>
-          <Logo  />
+        <Box sx={{ pt: 2.5, pb: 1 }}>
+          <Logo />
         </Box>
       )}
 

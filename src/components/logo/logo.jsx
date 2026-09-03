@@ -51,6 +51,7 @@ export const Logo = forwardRef((props, ref) => {
       style={{ objectFit: "contain" }}
     />
   );
+  
 
   return (
     <LogoRoot

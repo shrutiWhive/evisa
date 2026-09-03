@@ -1,5 +1,5 @@
 import { Box, Divider, Button, Stack, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -32,6 +32,47 @@ import { useOnboardingPersistence } from "src/hooks/useOnboardingPersistence";
 import { useOnboardingFormData } from "src/hooks/useOnboardingFormData";
 import { useOnboardingSave } from "src/hooks/useOnboardingSave";
 import { useOnboardingNavigation } from "src/hooks/useOnboardingNavigation";
+import { useGetStepDescription } from "src/api/onboardingform";
+
+const COMPLETED_ONBOARDING_STATUSES = new Set([
+  "completed",
+  "complete",
+  "filled",
+  "submitted",
+  "pending",
+  "approved",
+  "in review",
+  "in_review",
+]);
+
+const isCompletedStatus = (status) =>
+  COMPLETED_ONBOARDING_STATUSES.has(String(status || "").toLowerCase());
+
+const hasCompletedOnboardingForm = (onBoarding) => {
+  if (!onBoarding || Object.keys(onBoarding).length === 0) {
+    return false;
+  }
+
+  if (
+    [
+      onBoarding.status,
+      onBoarding.form_status,
+      onBoarding.onboarding_status,
+      onBoarding.onboarding_form_status,
+    ].some(isCompletedStatus)
+  ) {
+    return true;
+  }
+
+  return Boolean(onBoarding.healthRecord);
+};
+
+const normalizeStepIdentifier = (value) =>
+  String(value || "")
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 
 export default function OnboardingLayout() {
   const dispatch = useAppDispatch();
@@ -54,6 +95,8 @@ export default function OnboardingLayout() {
   const { onBoarding } = useAppSelector(
     (state) => state.onBoarding || { onBoarding: {} },
   );
+
+  const { steps } = useGetStepDescription();
 
   const { profile } = useAppSelector(
     (state) => state.profile || { profile: null },
@@ -232,6 +275,24 @@ export default function OnboardingLayout() {
     mode: "onChange",
   });
 
+  const currentStepDescription = useMemo(() => {
+    const currentStepName = ONBOARDING_STEPS[currentStep]?.label;
+    const currentStepIdentifier = normalizeStepIdentifier(currentStepName);
+
+    return (
+      steps.find((step) => {
+        if (step.is_active === 0) {
+          return false;
+        }
+
+        return [step.name, step.slug].some(
+          (identifier) =>
+            normalizeStepIdentifier(identifier) === currentStepIdentifier,
+        );
+      })?.description || ""
+    );
+  }, [currentStep, steps]);
+
   useEffect(() => {
     dispatch(fetchProfileRequest());
     dispatch(fetchOnBoardingRequest());
@@ -239,6 +300,28 @@ export default function OnboardingLayout() {
 
   // Use custom hook to populate form data
   useOnboardingFormData(methods, profile, onBoarding, eligibilityData);
+
+  useEffect(() => {
+    if (!isInitialized || !hasCompletedOnboardingForm(onBoarding)) {
+      return;
+    }
+
+    const allStepIndexes = ONBOARDING_STEPS.map((_, index) => index);
+    const hasAllStepsCompleted = allStepIndexes.every((stepIndex) =>
+      completedSteps.has(stepIndex),
+    );
+
+    if (!hasAllStepsCompleted) {
+      setCompletedSteps(new Set(allStepIndexes));
+      setCurrentStep(0);
+    }
+  }, [
+    completedSteps,
+    isInitialized,
+    onBoarding,
+    setCompletedSteps,
+    setCurrentStep,
+  ]);
 
   // Use custom hook to save step data
   const { saveCurrentStepData } = useOnboardingSave(
@@ -344,7 +427,7 @@ export default function OnboardingLayout() {
               <Typography
                 variant="h5"
                 sx={{
-                  mb: 3,
+                  mb: currentStepDescription ? 1 : 3,
                   fontWeight: 600,
                   textAlign: "center",
                   color: "primary.contrastText",
@@ -352,6 +435,21 @@ export default function OnboardingLayout() {
               >
                 {ONBOARDING_STEPS[currentStep]?.label || "Loading..."}
               </Typography>
+
+              {currentStepDescription && (
+                <Box
+                  sx={{
+                    mb: 3,
+                    mx: "auto",
+                    maxWidth: 760,
+                    color: "rgba(255,255,255,0.78)",
+                    textAlign: "center",
+                    typography: "body2",
+                    "& p": { m: 0 },
+                  }}
+                  dangerouslySetInnerHTML={{ __html: currentStepDescription }}
+                />
+              )}
 
               <OnboardingStepRenderer
                 currentStep={currentStep}

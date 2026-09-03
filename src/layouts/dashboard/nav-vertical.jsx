@@ -32,7 +32,7 @@ export function NavVertical({
       {...other}
     >
       {slots?.topArea ?? (
-        <Box sx={{ pl: 3.5, pt: 2.5, pb: 1 }}>
+        <Box sx={{ pt: 2.5, pb: 1 }}>
           <Logo size="default" />
         </Box>
       )}
